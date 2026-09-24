@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>我的订单 - 花间集鲜花商城</title>
+    <link rel="icon" href="assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/shop.css" />
+  </head>
+  <body>
+    <header id="siteHeader"></header>
+
+    <main class="page">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-title">我的订单</div>
+            <div class="section-sub">实时跟踪订单状态，支持支付、取消、确认收货与评价</div>
+          </div>
+          <input class="form-control" id="keyword" placeholder="搜索订单号 / 商品名" style="width: 220px; height: 34px" />
+        </div>
+
+        <div class="order-tabs" id="orderTabs">
+          <button class="active" data-status="">全部</button>
+          <button data-status="pending">待付款</button>
+          <button data-status="paid">待发货</button>
+          <button data-status="shipped">待收货</button>
+          <button data-status="completed">已完成</button>
+          <button data-status="canceled">已取消</button>
+        </div>
+
+        <div id="orderList"><div class="loading">加载中…</div></div>
+        <div class="pagination" id="pagination"></div>
+      </div>
+    </main>
+
+    <footer id="siteFooter"></footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/orders.js"></script>
+  </body>
+</html>

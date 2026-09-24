@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>订单管理 - 花间集后台管理</title>
+    <link rel="icon" href="../assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-layout">
+      <aside class="admin-side" id="adminSide"></aside>
+      <div class="admin-main">
+        <div class="admin-top" id="adminTop"></div>
+        <div class="admin-content">
+          <div class="stat-grid" id="orderStats" style="grid-template-columns: repeat(5, 1fr)"></div>
+
+          <div class="admin-toolbar">
+            <input class="form-control" id="kw" placeholder="订单号 / 收货人 / 手机号" />
+            <select class="form-control" id="statusSel">
+              <option value="">全部状态</option>
+              <option value="pending">待付款</option>
+              <option value="paid">待发货</option>
+              <option value="shipped">待收货</option>
+              <option value="completed">已完成</option>
+              <option value="canceled">已取消</option>
+            </select>
+            <input class="form-control" id="startDate" type="date" />
+            <span class="muted">至</span>
+            <input class="form-control" id="endDate" type="date" />
+            <button class="btn btn-ghost" id="searchBtn">查询</button>
+            <button class="btn btn-ghost" id="resetBtn">重置</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="150">订单号</th>
+                  <th width="110">客户</th>
+                  <th>收货信息</th>
+                  <th width="90">金额</th>
+                  <th width="90">状态</th>
+                  <th width="140">下单时间</th>
+                  <th width="200">操作</th>
+                </tr>
+              </thead>
+              <tbody id="tbody"><tr><td colspan="7" class="loading">加载中…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/ui.js"></script>
+    <script src="../assets/js/admin-layout.js"></script>
+    <script src="js/orders.js"></script>
+  </body>
+</html>

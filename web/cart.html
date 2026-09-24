@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>购物车 - 花间集鲜花商城</title>
+    <link rel="icon" href="assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/shop.css" />
+  </head>
+  <body>
+    <header id="siteHeader"></header>
+
+    <main class="page">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-title">我的购物车</div>
+            <div class="section-sub">确认商品与数量后前往结算</div>
+          </div>
+          <a class="muted" href="flowers.html">继续挑选鲜花 →</a>
+        </div>
+
+        <div class="cart-table" id="cartBox">
+          <div class="loading">加载中…</div>
+        </div>
+
+        <div style="margin-top: 24px" class="flex-between">
+          <div>
+            <button class="btn btn-ghost btn-sm" id="clearCart">清空购物车</button>
+          </div>
+          <div class="muted text-sm">温馨提示：鲜花为生鲜商品，下单后不支持修改地址，请仔细核对收货信息。</div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="siteFooter"></footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/cart.js"></script>
+  </body>
+</html>

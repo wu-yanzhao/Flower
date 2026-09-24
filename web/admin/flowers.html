@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>商品管理 - 花间集后台管理</title>
+    <link rel="icon" href="../assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-layout">
+      <aside class="admin-side" id="adminSide"></aside>
+      <div class="admin-main">
+        <div class="admin-top" id="adminTop"></div>
+        <div class="admin-content">
+          <div class="admin-toolbar">
+            <input class="form-control" id="kw" placeholder="搜索商品名称" />
+            <select class="form-control" id="catSel"><option value="">全部分类</option></select>
+            <select class="form-control" id="statusSel">
+              <option value="">全部状态</option>
+              <option value="on">在售</option>
+              <option value="off">已下架</option>
+            </select>
+            <button class="btn btn-ghost" id="searchBtn">查询</button>
+            <button class="btn btn-ghost" id="resetBtn">重置</button>
+            <div class="grow"></div>
+            <button class="btn btn-primary" id="addBtn">+ 新增商品</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="70">ID</th>
+                  <th width="70">图片</th>
+                  <th>商品名称</th>
+                  <th width="100">分类</th>
+                  <th width="90">售价</th>
+                  <th width="80">库存</th>
+                  <th width="80">销量</th>
+                  <th width="90">状态</th>
+                  <th width="200">操作</th>
+                </tr>
+              </thead>
+              <tbody id="tbody"><tr><td colspan="9" class="loading">加载中…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/ui.js"></script>
+    <script src="../assets/js/admin-layout.js"></script>
+    <script src="js/flowers.js"></script>
+  </body>
+</html>

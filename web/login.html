@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用户登录 - 花间集鲜花商城</title>
+    <link rel="icon" href="assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/shop.css" />
+  </head>
+  <body>
+    <header id="siteHeader"></header>
+
+    <main class="page">
+      <div class="container">
+        <div class="auth-wrap">
+          <div class="auth-art">
+            <img src="assets/images/ui/auth-art.svg" alt="鲜花礼盒" />
+            <h2>欢迎回来 🌸</h2>
+            <p>登录后即可选购鲜花、管理购物车与订单，管理员账号可进入后台管理系统。</p>
+          </div>
+
+          <div class="auth-box">
+            <h3>账号登录</h3>
+            <div class="tip">请使用注册时的账号密码登录</div>
+            <form id="loginForm" autocomplete="off">
+              <div class="form-item">
+                <label class="form-label"><span class="req">*</span>登录账号</label>
+                <input class="form-control" id="username" placeholder="请输入账号（字母开头 3-20 位）" />
+                <div class="form-error" data-error="username"></div>
+              </div>
+              <div class="form-item">
+                <label class="form-label"><span class="req">*</span>登录密码</label>
+                <input class="form-control" id="password" type="password" placeholder="请输入密码（6-20 位）" />
+                <div class="form-error" data-error="password"></div>
+              </div>
+              <button class="btn btn-primary btn-lg btn-block" type="submit" id="loginBtn">登 录</button>
+            </form>
+
+            <div class="auth-switch">还没有账号？<a href="register.html">立即注册</a></div>
+
+            <div class="demo-account">
+              <b>演示账号（答辩演示用）</b><br />
+              管理员：admin / admin123（可进入后台管理）<br />
+              顾客：customer / 123456（已有购物车与历史订单）
+              <div style="margin-top: 8px">
+                <button class="btn btn-ghost btn-sm" data-fill="admin">填入管理员账号</button>
+                <button class="btn btn-ghost btn-sm" data-fill="customer">填入顾客账号</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="siteFooter"></footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/auth.js"></script>
+  </body>
+</html>

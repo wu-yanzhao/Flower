@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用户管理 - 花间集后台管理</title>
+    <link rel="icon" href="../assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-layout">
+      <aside class="admin-side" id="adminSide"></aside>
+      <div class="admin-main">
+        <div class="admin-top" id="adminTop"></div>
+        <div class="admin-content">
+          <div class="admin-toolbar">
+            <input class="form-control" id="kw" placeholder="账号 / 昵称 / 手机号" />
+            <select class="form-control" id="roleSel">
+              <option value="">全部角色</option>
+              <option value="customer">普通顾客</option>
+              <option value="admin">管理员</option>
+            </select>
+            <select class="form-control" id="statusSel">
+              <option value="">全部状态</option>
+              <option value="active">正常</option>
+              <option value="disabled">已禁用</option>
+            </select>
+            <button class="btn btn-ghost" id="searchBtn">查询</button>
+            <button class="btn btn-ghost" id="resetBtn">重置</button>
+            <div class="grow"></div>
+            <button class="btn btn-primary" id="addBtn">+ 新增用户</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="60">ID</th>
+                  <th width="130">账号</th>
+                  <th width="120">昵称</th>
+                  <th width="130">手机号</th>
+                  <th width="90">角色</th>
+                  <th width="80">订单数</th>
+                  <th width="110">消费金额</th>
+                  <th width="90">状态</th>
+                  <th width="180">操作</th>
+                </tr>
+              </thead>
+              <tbody id="tbody"><tr><td colspan="9" class="loading">加载中…</td></tr></tbody>
+            </table>
+          </div>
+          <div class="pagination" id="pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/ui.js"></script>
+    <script src="../assets/js/admin-layout.js"></script>
+    <script src="js/users.js"></script>
+  </body>
+</html>

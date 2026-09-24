@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>数据概览 - 花间集后台管理</title>
+    <link rel="icon" href="../assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-layout">
+      <aside class="admin-side" id="adminSide"></aside>
+      <div class="admin-main">
+        <div class="admin-top" id="adminTop"></div>
+        <div class="admin-content">
+          <!-- 指标卡片 -->
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="ico">💰</div>
+              <div><div class="num" id="kpiSales">0</div><div class="lbl">销售总额（元）</div></div>
+            </div>
+            <div class="stat-card c2">
+              <div class="ico">📦</div>
+              <div><div class="num" id="kpiOrders">0</div><div class="lbl">订单总数（笔）</div></div>
+            </div>
+            <div class="stat-card c3">
+              <div class="ico">🚚</div>
+              <div><div class="num" id="kpiShip">0</div><div class="lbl">待发货 / 待收货</div></div>
+            </div>
+            <div class="stat-card c4">
+              <div class="ico">👥</div>
+              <div><div class="num" id="kpiUsers">0</div><div class="lbl">注册用户（人）</div></div>
+            </div>
+          </div>
+
+          <div class="alert alert-info" style="margin-bottom: 18px" id="todayTip">数据加载中…</div>
+
+          <!-- 趋势 + 占比 -->
+          <div class="chart-grid">
+            <div class="panel">
+              <div class="panel-head">
+                <h3>近 7 日销售趋势</h3>
+                <select class="form-control" id="trendDays" style="height: 30px; width: auto">
+                  <option value="7">近 7 天</option>
+                  <option value="14">近 14 天</option>
+                  <option value="30">近 30 天</option>
+                </select>
+              </div>
+              <div class="panel-body" id="trendChart"><div class="loading">加载中…</div></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>各分类销量占比</h3></div>
+              <div class="panel-body" id="categoryChart"><div class="loading">加载中…</div></div>
+            </div>
+          </div>
+
+          <!-- 热销 + 最新订单 -->
+          <div class="chart-grid">
+            <div class="panel">
+              <div class="panel-head"><h3>热销商品 TOP 5</h3></div>
+              <div class="panel-body" id="topChart"><div class="loading">加载中…</div></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>最新订单</h3><a class="link-btn" href="orders.html">查看全部</a></div>
+              <div class="panel-body"><div class="mini-list" id="latestOrders"><div class="loading">加载中…</div></div></div>
+            </div>
+          </div>
+
+          <!-- 状态分布 + 操作日志 -->
+          <div class="chart-grid">
+            <div class="panel">
+              <div class="panel-head"><h3>订单状态分布</h3></div>
+              <div class="panel-body" id="statusChart"><div class="loading">加载中…</div></div>
+            </div>
+            <div class="panel">
+              <div class="panel-head"><h3>最近操作日志</h3></div>
+              <div class="panel-body" id="logList"><div class="loading">加载中…</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/ui.js"></script>
+    <script src="../assets/js/chart.js"></script>
+    <script src="../assets/js/admin-layout.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>

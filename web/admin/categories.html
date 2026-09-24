@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>分类管理 - 花间集后台管理</title>
+    <link rel="icon" href="../assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="../assets/css/base.css" />
+    <link rel="stylesheet" href="../assets/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-layout">
+      <aside class="admin-side" id="adminSide"></aside>
+      <div class="admin-main">
+        <div class="admin-top" id="adminTop"></div>
+        <div class="admin-content">
+          <div class="admin-toolbar">
+            <div class="grow"></div>
+            <button class="btn btn-primary" id="addBtn">+ 新增分类</button>
+          </div>
+
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th width="60">ID</th>
+                  <th width="200">分类名称</th>
+                  <th>分类描述</th>
+                  <th width="90">排序</th>
+                  <th width="110">商品数</th>
+                  <th width="160">操作</th>
+                </tr>
+              </thead>
+              <tbody id="tbody"><tr><td colspan="6" class="loading">加载中…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/ui.js"></script>
+    <script src="../assets/js/admin-layout.js"></script>
+    <script src="js/categories.js"></script>
+  </body>
+</html>

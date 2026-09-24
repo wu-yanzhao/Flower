@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>鲜花详情 - 花间集鲜花商城</title>
+    <link rel="icon" href="assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/shop.css" />
+  </head>
+  <body>
+    <header id="siteHeader"></header>
+
+    <main class="page">
+      <div class="container">
+        <div class="muted text-sm" style="margin-bottom: 12px">
+          <a href="index.html">首页</a> / <a href="flowers.html">全部鲜花</a> / <span id="crumb">商品详情</span>
+        </div>
+
+        <div class="detail-layout">
+          <div class="gallery">
+            <img class="gallery-main" id="mainImg" src="assets/images/ui/no-image.svg" alt="鲜花" />
+            <div class="promise" style="margin-top: 14px">
+              <span>当日现采</span><span>花艺师手工</span><span>冷链配送</span><span>不新鲜重做</span>
+            </div>
+          </div>
+
+          <div class="detail-info">
+            <h1 id="fName">加载中…</h1>
+            <div class="subtitle" id="fSubtitle"></div>
+
+            <div class="price-panel">
+              <div class="row">
+                <span class="price" id="fPrice">¥0</span>
+                <span class="price-old" id="fOldPrice"></span>
+                <span class="badge badge-primary" id="fDiscount"></span>
+              </div>
+              <div class="row">
+                <span id="fRating"></span>
+                <span class="muted">|</span>
+                <span>已售 <b id="fSales">0</b> 束</span>
+                <span class="muted">|</span>
+                <span>库存 <b id="fStock">0</b> 束</span>
+              </div>
+              <div class="row">
+                <span class="badge badge-success">满 300 减 20</span>
+                <span class="badge badge-warning">满 500 减 50</span>
+                <span class="badge badge-info">支持货到付款</span>
+              </div>
+            </div>
+
+            <div class="attr-item">
+              <div class="k">花　语</div>
+              <div id="fLanguage"></div>
+            </div>
+            <div class="attr-item">
+              <div class="k">花　材</div>
+              <div id="fMaterial"></div>
+            </div>
+            <div class="attr-item">
+              <div class="k">包　装</div>
+              <div id="fPacking"></div>
+            </div>
+            <div class="attr-item">
+              <div class="k">数　量</div>
+              <div class="stepper">
+                <button id="qtyMinus">−</button>
+                <input id="qtyInput" value="1" />
+                <button id="qtyPlus">+</button>
+              </div>
+              <span class="muted text-sm" style="margin-left: 10px" id="stockTip"></span>
+            </div>
+
+            <div class="detail-actions">
+              <button class="btn btn-primary" id="buyNowBtn">立即购买</button>
+              <button class="btn btn-outline" id="addCartBtn">加入购物车</button>
+              <button class="btn btn-ghost" id="favBtn">♡ 收藏</button>
+            </div>
+
+            <div class="promise">
+              <span>支持 7 天无理由退换</span><span>配送时间可备注</span><span>免费赠送贺卡</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 详情 Tab -->
+        <section class="section" style="margin-top: 36px">
+          <div class="tabs" id="detailTabs">
+            <button class="active" data-tab="desc">商品详情</button>
+            <button data-tab="review">用户评价（<span id="reviewCount">0</span>）</button>
+          </div>
+          <div class="detail-extra" id="tabDesc"></div>
+          <div class="detail-extra" id="tabReview" style="display: none">
+            <div id="reviewList"></div>
+            <div class="pagination" id="reviewPages"></div>
+          </div>
+        </section>
+
+        <!-- 相关推荐 -->
+        <section class="section">
+          <div class="section-head"><div class="section-title">为你推荐</div></div>
+          <div class="flower-grid" id="relatedGrid"><div class="loading">加载中…</div></div>
+        </section>
+      </div>
+    </main>
+
+    <footer id="siteFooter"></footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/flower.js"></script>
+  </body>
+</html>

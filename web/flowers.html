@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>全部鲜花 - 花间集鲜花商城</title>
+    <link rel="icon" href="assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/shop.css" />
+  </head>
+  <body>
+    <header id="siteHeader"></header>
+
+    <main class="page">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-title">全部鲜花</div>
+            <div class="section-sub" id="listSummary">正在加载商品…</div>
+          </div>
+        </div>
+
+        <div class="list-layout">
+          <!-- 筛选侧栏 -->
+          <aside class="filter-box">
+            <h4>筛选条件</h4>
+            <div class="filter-group">
+              <div class="label">商品分类</div>
+              <div class="filter-options" id="catFilter">
+                <button class="active" data-cat="0">全部</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <div class="label">价格区间（元）</div>
+              <div class="filter-options" id="priceFilter">
+                <button class="active" data-min="" data-max="">不限</button>
+                <button data-min="0" data-max="199">199 以下</button>
+                <button data-min="200" data-max="299">200-299</button>
+                <button data-min="300" data-max="459">300-459</button>
+                <button data-min="460" data-max="9999">460 以上</button>
+              </div>
+              <div class="price-range" style="margin-top: 8px">
+                <input id="minPrice" placeholder="最低" />
+                <span class="muted">-</span>
+                <input id="maxPrice" placeholder="最高" />
+                <button class="btn btn-ghost btn-sm" id="priceBtn">确定</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <div class="label">关键词</div>
+              <input class="form-control" id="keywordInput" placeholder="如：玫瑰 / 康乃馨" style="height: 34px" />
+              <button class="btn btn-primary btn-sm btn-block" id="keywordBtn" style="margin-top: 8px">搜索</button>
+            </div>
+            <button class="btn btn-ghost btn-block btn-sm" id="resetFilter">重置筛选条件</button>
+          </aside>
+
+          <!-- 商品区 -->
+          <div>
+            <div class="list-toolbar">
+              <div class="sort-tabs" id="sortTabs">
+                <button class="active" data-sort="default">综合排序</button>
+                <button data-sort="sales">销量优先</button>
+                <button data-sort="price_asc">价格从低到高</button>
+                <button data-sort="price_desc">价格从高到低</button>
+                <button data-sort="new">最新上架</button>
+                <button data-sort="rating">评分最高</button>
+              </div>
+              <div class="muted text-sm" id="pageInfo"></div>
+            </div>
+            <div class="flower-grid" id="flowerGrid">
+              <div class="loading">加载中…</div>
+            </div>
+            <div class="pagination" id="pagination"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="siteFooter"></footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/flowers.js"></script>
+  </body>
+</html>

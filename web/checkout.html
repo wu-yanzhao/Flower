@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>确认订单 - 花间集鲜花商城</title>
+    <link rel="icon" href="assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/shop.css" />
+  </head>
+  <body>
+    <header id="siteHeader"></header>
+
+    <main class="page">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-title">确认订单</div>
+            <div class="section-sub">请核对收货信息与商品清单</div>
+          </div>
+        </div>
+
+        <div class="checkout-layout">
+          <div>
+            <div class="card" style="margin-bottom: 16px">
+              <div class="flex-between" style="margin-bottom: 12px">
+                <h4 style="font-size: 15px">收货地址</h4>
+                <button class="btn btn-outline btn-sm" id="addAddrBtn">+ 新增地址</button>
+              </div>
+              <div class="address-list" id="addressList"><div class="loading">加载中…</div></div>
+            </div>
+
+            <div class="card" style="margin-bottom: 16px">
+              <h4 style="font-size: 15px; margin-bottom: 12px">商品清单</h4>
+              <div id="goodsList"><div class="loading">加载中…</div></div>
+            </div>
+
+            <div class="card">
+              <h4 style="font-size: 15px; margin-bottom: 12px">订单备注</h4>
+              <textarea class="form-control" id="remarkInput" placeholder="如：请于下午 3 点后送达；贺卡内容写“生日快乐”"></textarea>
+              <div class="alert alert-info" style="margin-top: 12px">
+                配送说明：同城最快 2 小时送达，跨城市次日达。满 300 减 20，满 500 减 50，优惠在结算时自动计算。
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-box">
+            <h4 style="font-size: 15px; margin-bottom: 14px">金额明细</h4>
+            <div class="line"><span>商品件数</span><span id="sumCount">0 件</span></div>
+            <div class="line"><span>商品总额</span><span id="sumTotal">¥0</span></div>
+            <div class="line"><span>优惠减免</span><span id="sumDiscount" style="color: #e4577a">-¥0</span></div>
+            <div class="line"><span>运费</span><span>包邮</span></div>
+            <div class="line total"><span>应付金额</span><b id="sumPay">¥0</b></div>
+            <button class="btn btn-primary btn-lg btn-block" id="submitOrder" style="margin-top: 16px">提交订单</button>
+            <div class="muted text-sm" style="margin-top: 10px; text-align: center">提交后进入支付页</div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="siteFooter"></footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/checkout.js"></script>
+  </body>
+</html>

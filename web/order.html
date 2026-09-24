@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>订单详情 - 花间集鲜花商城</title>
+    <link rel="icon" href="assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/shop.css" />
+  </head>
+  <body>
+    <header id="siteHeader"></header>
+
+    <main class="page">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <div class="section-title">订单详情</div>
+            <div class="section-sub" id="orderStatusTip">加载中…</div>
+          </div>
+          <a class="muted" href="orders.html">← 返回我的订单</a>
+        </div>
+
+        <div class="checkout-layout">
+          <div>
+            <div class="card" style="margin-bottom: 16px">
+              <h4 style="font-size: 15px; margin-bottom: 14px">订单跟踪</h4>
+              <div class="timeline" id="timeline"><div class="loading">加载中…</div></div>
+            </div>
+
+            <div class="card" style="margin-bottom: 16px">
+              <h4 style="font-size: 15px; margin-bottom: 14px">商品清单</h4>
+              <table class="table">
+                <thead>
+                  <tr><th>商品</th><th>单价</th><th>数量</th><th>小计</th></tr>
+                </thead>
+                <tbody id="goodsBody"></tbody>
+              </table>
+            </div>
+
+            <div class="card">
+              <h4 style="font-size: 15px; margin-bottom: 14px">收货与物流信息</h4>
+              <div id="shippingInfo"></div>
+            </div>
+          </div>
+
+          <div class="summary-box">
+            <h4 style="font-size: 15px; margin-bottom: 14px">订单信息</h4>
+            <div id="orderMeta"></div>
+            <div style="margin-top: 16px" id="orderActions"></div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer id="siteFooter"></footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/order.js"></script>
+  </body>
+</html>

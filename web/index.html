@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>花间集鲜花商城 - 鲜花订购与管理系统</title>
+    <meta name="description" content="花间集鲜花商城，鲜花在线浏览、选购、下单、配送一站式服务" />
+    <link rel="icon" href="assets/images/ui/favicon.svg" />
+    <link rel="stylesheet" href="assets/css/base.css" />
+    <link rel="stylesheet" href="assets/css/layout.css" />
+    <link rel="stylesheet" href="assets/css/shop.css" />
+  </head>
+  <body>
+    <header id="siteHeader"></header>
+
+    <main class="page">
+      <div class="container">
+        <!-- 主视觉 -->
+        <section class="hero">
+          <div class="hero-text">
+            <span class="eyebrow">🌸 当日现采 · 同城最快 2 小时送达</span>
+            <h1>把<em>一束温柔</em>，送给重要的人</h1>
+            <p>
+              18 款精选花礼，覆盖爱情、生日、感恩、庆典等场景；支持在线选购、加入购物车、
+              一键下单、订单跟踪与评价，全流程数字化管理。
+            </p>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap">
+              <a class="btn btn-primary btn-lg" href="flowers.html">立即选购鲜花</a>
+              <a class="btn btn-outline btn-lg" href="register.html">注册领新人券</a>
+            </div>
+            <div class="hero-stats">
+              <div><b id="statFlower">0</b><span>在售花礼</span></div>
+              <div><b id="statOrder">0</b><span>累计订单</span></div>
+              <div><b id="statUser">0</b><span>注册用户</span></div>
+            </div>
+          </div>
+          <div class="hero-art">
+            <img src="assets/images/ui/hero.svg" alt="鲜花花束" />
+          </div>
+        </section>
+
+        <!-- 服务保障 -->
+        <section class="section" style="margin-top: 32px">
+          <div class="service-bar">
+            <div class="service-item"><b>🚚 极速配送</b><span>同城最快 2 小时送达</span></div>
+            <div class="service-item"><b>🌷 新鲜承诺</b><span>当日现采，不新鲜重做</span></div>
+            <div class="service-item"><b>🎀 精美包装</b><span>花艺师手工制作</span></div>
+            <div class="service-item"><b>🛡️ 售后无忧</b><span>7 天内问题可退换</span></div>
+          </div>
+        </section>
+
+        <!-- 分类入口 -->
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <div class="section-title">按场景挑选</div>
+              <div class="section-sub">不同场景，选对花才恰当</div>
+            </div>
+            <a class="muted" href="flowers.html">查看全部 →</a>
+          </div>
+          <div class="cat-entry" id="catEntry">
+            <div class="loading">加载中…</div>
+          </div>
+        </section>
+
+        <!-- 推荐鲜花 -->
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <div class="section-title">店长推荐</div>
+              <div class="section-sub">花艺师精心搭配，销量与口碑兼顾</div>
+            </div>
+            <a class="muted" href="flowers.html">更多鲜花 →</a>
+          </div>
+          <div class="flower-grid" id="recommendGrid">
+            <div class="loading">加载中…</div>
+          </div>
+        </section>
+
+        <!-- 热销榜 -->
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <div class="section-title">热销榜 TOP 5</div>
+              <div class="section-sub">大家都在买，跟着买不出错</div>
+            </div>
+          </div>
+          <div class="rank-list" id="rankList">
+            <div class="loading">加载中…</div>
+          </div>
+        </section>
+
+        <!-- 购物流程 -->
+        <section class="section">
+          <div class="section-head">
+            <div>
+              <div class="section-title">四步完成订购</div>
+              <div class="section-sub">简洁清晰的购物流程</div>
+            </div>
+          </div>
+          <div class="service-bar">
+            <div class="service-item"><b>1️⃣ 注册登录</b><span>区分顾客与管理员权限</span></div>
+            <div class="service-item"><b>2️⃣ 挑选鲜花</b><span>分类 / 搜索 / 查看详情</span></div>
+            <div class="service-item"><b>3️⃣ 购物车下单</b><span>库存校验 + 满减优惠</span></div>
+            <div class="service-item"><b>4️⃣ 跟踪与评价</b><span>物流时间轴 + 评分</span></div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <footer id="siteFooter"></footer>
+
+    <script src="assets/js/api.js"></script>
+    <script src="assets/js/ui.js"></script>
+    <script src="assets/js/components.js"></script>
+    <script src="assets/js/layout.js"></script>
+    <script src="assets/js/home.js"></script>
+  </body>
+</html>

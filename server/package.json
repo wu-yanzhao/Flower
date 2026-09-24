@@ -1,0 +1,30 @@
+{
+  "name": "flower-shop-server",
+  "version": "1.0.0",
+  "description": "鲜花订购与管理系统 · 后端服务（Express + SQLite）",
+  "main": "src/app.js",
+  "private": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node --no-warnings src/app.js",
+    "dev": "node --no-warnings --watch src/app.js",
+    "reset": "node --no-warnings scripts/reset.js",
+    "seed": "node --no-warnings scripts/seed.js",
+    "test:api": "node --no-warnings scripts/smoke-test.js",
+    "test:admin": "node --no-warnings scripts/admin-test.js",
+    "test": "node --no-warnings scripts/smoke-test.js && node --no-warnings scripts/reset.js && node --no-warnings scripts/admin-test.js"
+  },
+  "dependencies": {
+    "express": "^4.22.3"
+  },
+  "keywords": [
+    "鲜花",
+    "电商",
+    "毕业设计",
+    "Express",
+    "SQLite"
+  ],
+  "license": "MIT"
+}
