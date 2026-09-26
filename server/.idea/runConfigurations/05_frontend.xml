@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="5 前端静态服务 5173" type="NodeJSConfigurationType" path-to-js-file="$PROJECT_DIR$/../web/server.js" working-dir="$PROJECT_DIR$/../web">
+    <envs>
+      <env name="PORT" value="5173" />
+      <env name="API_TARGET" value="http://localhost:3000" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

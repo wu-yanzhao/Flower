@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="4 管理端接口测试 49项" type="NodeJSConfigurationType" application-parameters="--no-warnings" path-to-js-file="$PROJECT_DIR$/scripts/admin-test.js" working-dir="$PROJECT_DIR$">
+    <method v="2" />
+  </configuration>
+</component>

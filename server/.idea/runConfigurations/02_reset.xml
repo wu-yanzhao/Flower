@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="2 重置演示数据" type="NodeJSConfigurationType" application-parameters="--no-warnings" path-to-js-file="$PROJECT_DIR$/scripts/reset.js" working-dir="$PROJECT_DIR$">
+    <method v="2" />
+  </configuration>
+</component>

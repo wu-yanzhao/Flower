@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="1 后端服务 3000" type="NodeJSConfigurationType" application-parameters="--no-warnings" path-to-js-file="$PROJECT_DIR$/src/app.js" working-dir="$PROJECT_DIR$">
+    <envs>
+      <env name="PORT" value="3000" />
+    </envs>
+    <method v="2" />
+  </configuration>
+</component>

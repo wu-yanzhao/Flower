@@ -36,6 +36,7 @@
 E:\Flower
 ├── README.md                 # 项目说明（本文件）
 ├── 启动项目.bat              # 一键启动（自动安装依赖 → 初始化数据 → 打开浏览器）
+├── 启动前端.bat              # 只启动前端静态服务（后端另由 IDEA 启动时使用）
 ├── docs\                     # 设计文档（论文素材）
 │   ├── 01-需求分析与系统设计.md
 │   ├── 02-数据库设计.md
@@ -43,7 +44,8 @@ E:\Flower
 │   ├── 04-系统测试.md
 │   ├── 05-答辩指南.md
 │   ├── 06-Calicat原型检索提示词.md  # 设计阶段检索原型/组件/图标素材用
-│   └── 07-Calicat可粘贴AI生成提示词.md  # 20 条可直接粘进 AI 设计助理的生成指令
+│   ├── 07-Calicat可粘贴AI生成提示词.md  # 20 条可直接粘进 AI 设计助理的生成指令
+│   └── 08-前后端分工运行说明.md  # 前端 Node 独立启动 + 后端 IDEA 运行配置
 ├── server\                   # 后端
 │   ├── package.json
 │   ├── src\
@@ -83,6 +85,8 @@ E:\Flower
 │   │   ├── orders.html       # 订单管理
 │   │   ├── users.html        # 用户管理
 │   │   └── reviews.html      # 评价管理
+│   ├── server.js             # 前端静态服务（Node 内置模块实现，并把 /api 转发给后端）
+│   ├── package.json          # 仅声明 start / dev 脚本，无任何第三方依赖
 │   └── assets\               # css / js / images（鲜花插画为本地 SVG）
 └── scripts\                  # 素材生成脚本（鲜花插画、UI 装饰图）
 ```
@@ -109,7 +113,39 @@ npm run reset      # 初始化数据库与演示数据（首次必须执行）
 npm start          # 启动服务
 ```
 
-启动成功后访问：
+### 方式三：前后端分开跑（前端 Node + 后端 IDEA，日常开发与答辩推荐）
+
+后端交给 IDEA 管理，前端用独立的 Node 静态服务启动，两边互不干扰，改页面时不用重启后端。
+
+**① 后端（IDEA）**：用 IDEA 打开 `E:\Flower\server`，右上角运行配置选择 **`1 后端服务 3000`** → Run。
+
+**② 前端（Node）**：
+
+```bash
+cd E:\Flower\web
+npm install        # 无第三方依赖，秒完成；也可完全跳过
+npm start          # 等价于 node server.js
+```
+
+或双击根目录的 **`启动前端.bat`**。
+
+**启动成功后访问：**
+
+| 入口 | 地址 | 说明 |
+| --- | --- | --- |
+| 顾客端首页 | http://localhost:5173/ | 静态页面由 Node 提供 |
+| 管理后台 | http://localhost:5173/admin/index.html | 同上 |
+| 接口转发 | `/api/*` → `http://localhost:3000/api/*` | 由 `web/server.js` 自动代理 |
+
+> `web/server.js` 用 Node 内置模块实现，**零第三方依赖**，并且把 `/api` 请求转发到后端，
+> 所以前端 `api.js` 里的 `BASE = '/api'` 一行都不用改，也不存在跨域问题。
+
+详细配置（IDEA 节点解释器、运行参数、环境变量、常见问题）见
+**`docs/08-前后端分工运行说明.md`**。
+
+---
+
+启动成功后访问（方式一、方式二）：
 
 | 入口 | 地址 |
 | --- | --- |
@@ -167,6 +203,8 @@ npm start          # 启动服务
 
 ## 七、常用命令
 
+### 后端（`E:\Flower\server` 目录，或直接在 IDEA 里点运行）
+
 ```bash
 npm start           # 启动服务（默认 3000 端口）
 npm run dev         # 开发模式（文件变更自动重启，Node 18.11+ 支持）
@@ -180,6 +218,15 @@ npm run test:admin  # 仅管理端写操作接口测试（49 项）
 > 自动化测试当前结果：**84 项断言全部通过**（详见 `docs/04-系统测试.md`）。
 
 环境变量（可选，见 `server/.env.example`）：`PORT`、`JWT_SECRET`、`DB_FILE`。
+
+### 前端（`E:\Flower\web` 目录）
+
+```bash
+npm start           # 启动静态服务，默认 5173 端口（等价于 node server.js）
+npm run open        # 启动并自动打开浏览器
+```
+
+环境变量：`PORT`（前端端口）、`API_TARGET`（后端地址，默认 `http://localhost:3000`）。
 
 ---
 

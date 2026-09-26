@@ -1,0 +1,22 @@
+{
+  "name": "flower-shop-web",
+  "version": "1.0.0",
+  "description": "鲜花订购与管理系统 · 前端静态服务（Node 内置模块实现，零依赖）",
+  "private": true,
+  "main": "server.js",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "open": "node server.js --open"
+  },
+  "keywords": [
+    "鲜花",
+    "电商",
+    "毕业设计",
+    "前端静态服务"
+  ],
+  "license": "MIT"
+}
