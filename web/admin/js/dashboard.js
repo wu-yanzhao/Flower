@@ -5,6 +5,23 @@
   'use strict';
   var UI = window.UI;
 
+  /* 统一失败处理：接口失败时给出可见提示，而不是永远停在"加载中…" */
+  function fail(id) {
+    return function (err) {
+      UI.panelError(id, err);
+    };
+  }
+
+  /* 统一空数据处理：图表数据源为空时渲染占位，避免绘图组件算出 NaN */
+  function emptyOr(id, render) {
+    return function (list) {
+      if (!list || !list.length) {
+        UI.panelError(id, '暂无数据');
+        return;
+      }
+      render(list);
+    };
+  }
   function loadOverview() {
     window.API.get('/admin/stats/overview')
       .then(function (d) {
@@ -18,60 +35,69 @@
           '评价 <b>' + d.reviewCount + '</b> 条，库存预警（≤10）<b style="color:#e2564f">' + d.lowStock + '</b> 款。';
       })
       .catch(function (err) {
+        UI.panelError('todayTip', err);
         UI.toast(err.message, 'error');
       });
   }
 
   function loadTrend(days) {
     window.API.get('/admin/stats/trend', { days: days })
-      .then(function (list) {
-        document.getElementById('trendChart').innerHTML = window.Chart.line({
-          data: list.map(function (d) {
-            return { label: String(d.date).slice(5), value: d.sales };
-          }),
-          height: 250,
-        });
-      })
-      .catch(function () {});
+      .then(
+        emptyOr('trendChart', function (list) {
+          document.getElementById('trendChart').innerHTML = window.Chart.line({
+            data: list.map(function (d) {
+              return { label: String(d.date).slice(5), value: d.sales };
+            }),
+            height: 250,
+          });
+        })
+      )
+      .catch(fail('trendChart'));
   }
 
   function loadCategory() {
     window.API.get('/admin/stats/category')
-      .then(function (list) {
-        var pie = window.Chart.pie({
-          data: list.map(function (d) {
-            return { name: d.name, value: d.quantity };
-          }),
-          centerLabel: '销量',
-        });
-        document.getElementById('categoryChart').innerHTML = pie.svg + pie.legend;
-      })
-      .catch(function () {});
+      .then(
+        emptyOr('categoryChart', function (list) {
+          var pie = window.Chart.pie({
+            data: list.map(function (d) {
+              return { name: d.name, value: d.quantity };
+            }),
+            centerLabel: '销量',
+          });
+          document.getElementById('categoryChart').innerHTML = pie.svg + pie.legend;
+        })
+      )
+      .catch(fail('categoryChart'));
   }
 
   function loadTop() {
     window.API.get('/admin/stats/top', { limit: 5 })
-      .then(function (list) {
-        document.getElementById('topChart').innerHTML = window.Chart.bar({
-          data: list.map(function (d) {
-            return { label: d.name, value: d.quantity };
-          }),
-        });
-      })
-      .catch(function () {});
+      .then(
+        emptyOr('topChart', function (list) {
+          document.getElementById('topChart').innerHTML = window.Chart.bar({
+            data: list.map(function (d) {
+              return { label: d.name, value: d.quantity };
+            }),
+          });
+        })
+      )
+      .catch(fail('topChart'));
   }
 
   function loadStatus() {
     window.API.get('/admin/stats/status')
-      .then(function (list) {
-        document.getElementById('statusChart').innerHTML = window.Chart.bar({
-          data: list.map(function (d) {
-            return { label: UI.statusText(d.status), value: d.count };
-          }),
-          labelWidth: 90,
-        });
-      })
-      .catch(function () {});
+      .then(
+        emptyOr('statusChart', function (list) {
+          document.getElementById('statusChart').innerHTML = window.Chart.bar({
+            data: list.map(function (d) {
+              return { label: UI.statusText(d.status), value: d.count };
+            }),
+            labelWidth: 90,
+          });
+        })
+      )
+      .catch(fail('statusChart'));
   }
 
   function loadLatest() {
@@ -91,7 +117,7 @@
               .join('')
           : UI.empty('暂无订单');
       })
-      .catch(function () {});
+      .catch(fail('latestOrders'));
   }
 
   function loadLogs() {
@@ -106,7 +132,7 @@
               .join('')
           : UI.empty('暂无操作日志');
       })
-      .catch(function () {});
+      .catch(fail('logList'));
   }
 
   document.addEventListener('DOMContentLoaded', function () {

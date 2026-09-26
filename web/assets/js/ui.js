@@ -205,6 +205,27 @@
     };
   }
 
+  /**
+   * 面板加载失败占位（统一管理后台各面板的错误态）
+   * 背景：原先各面板用空的 catch 吞掉异常，接口失败时会永远停在"加载中…"，
+   *       看上去像页面打不开。这里统一渲染可读的错误信息，可选带重试按钮。
+   * @param {string|HTMLElement} target 容器 id 或元素
+   * @param {Error|string} err         错误信息
+   * @param {Function} [retry]         传入则渲染"重试"按钮
+   */
+  function panelError(target, err, retry) {
+    var box = typeof target === 'string' ? document.getElementById(target) : target;
+    if (!box) return;
+    var msg = (err && err.message) || err || '未知错误';
+    box.innerHTML =
+      '<div class="loading" style="color:#c0392b">数据加载失败：' + escapeHtml(msg) + '</div>' +
+      (retry ? '<button class="btn btn-ghost btn-sm js-retry" style="margin-top:10px">重试</button>' : '');
+    if (retry) {
+      var btn = box.querySelector('.js-retry');
+      if (btn) btn.addEventListener('click', retry);
+    }
+  }
+
   /** 提取接口/表单校验错误的第一条提示（用于表单内联提示） */
   function firstError(err) {
     if (err && err.details) {
@@ -231,6 +252,7 @@
     STATUS: STATUS,
     renderPagination: renderPagination,
     empty: empty,
+    panelError: panelError,
     qs: qs,
     debounce: debounce,
     firstError: firstError,
