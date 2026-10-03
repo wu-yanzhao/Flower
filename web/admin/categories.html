@@ -9,32 +9,47 @@
     <link rel="stylesheet" href="../assets/css/admin.css" />
   </head>
   <body class="admin-body">
-    <div class="admin-layout">
+    <div class="admin-layout" id="adminLayout">
       <aside class="admin-side" id="adminSide"></aside>
       <div class="admin-main">
-        <div class="admin-top" id="adminTop"></div>
-        <div class="admin-content">
-          <div class="admin-toolbar">
-            <div class="grow"></div>
-            <button class="btn btn-primary" id="addBtn">+ 新增分类</button>
-          </div>
+        <header class="admin-top" id="adminTop"></header>
+        <main class="admin-content">
+          <div class="admin-content-inner">
+            <div class="admin-page-head">
+              <div>
+                <h1>分类管理</h1>
+                <p>花礼分类维护，排序值越小越靠前，分类将同步至前台「按场景挑选」</p>
+              </div>
+              <div class="admin-page-actions">
+                <button class="btn btn-primary" id="addBtn" type="button">
+                  <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                  新增分类
+                </button>
+              </div>
+            </div>
 
-          <div class="table-wrap">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th width="60">ID</th>
-                  <th width="200">分类名称</th>
-                  <th>分类描述</th>
-                  <th width="90">排序</th>
-                  <th width="110">商品数</th>
-                  <th width="160">操作</th>
-                </tr>
-              </thead>
-              <tbody id="tbody"><tr><td colspan="6" class="loading">加载中…</td></tr></tbody>
-            </table>
+            <div class="alert alert-warning" style="margin-bottom: 16px">
+              删除保护：若分类下仍有商品，系统将阻止删除，并提示先转移或下架对应商品。
+            </div>
+
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th width="70">ID</th>
+                    <th width="200">分类名称</th>
+                    <th>分类描述</th>
+                    <th width="100">排序</th>
+                    <th width="120">商品数</th>
+                    <th width="170">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody"><tr><td colspan="6" class="loading">加载中…</td></tr></tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        </main>
+        <footer class="admin-foot" id="adminFoot"></footer>
       </div>
     </div>
 

@@ -9,41 +9,57 @@
     <link rel="stylesheet" href="../assets/css/admin.css" />
   </head>
   <body class="admin-body">
-    <div class="admin-layout">
+    <div class="admin-layout" id="adminLayout">
       <aside class="admin-side" id="adminSide"></aside>
       <div class="admin-main">
-        <div class="admin-top" id="adminTop"></div>
-        <div class="admin-content">
-          <div class="admin-toolbar">
-            <input class="form-control" id="kw" placeholder="搜索评价内容 / 用户 / 商品" />
-            <select class="form-control" id="statusSel">
-              <option value="">全部状态</option>
-              <option value="visible">已展示</option>
-              <option value="hidden">已隐藏</option>
-            </select>
-            <button class="btn btn-ghost" id="searchBtn">查询</button>
-            <button class="btn btn-ghost" id="resetBtn">重置</button>
-          </div>
+        <header class="admin-top" id="adminTop"></header>
+        <main class="admin-content">
+          <div class="admin-content-inner">
+            <div class="admin-page-head">
+              <div>
+                <h1>评价管理</h1>
+                <p>评价审核与商家回复，隐藏后前台商品详情页将不再展示该内容</p>
+              </div>
+            </div>
 
-          <div class="table-wrap">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th width="60">ID</th>
-                  <th width="120">用户</th>
-                  <th width="180">商品</th>
-                  <th>评价内容</th>
-                  <th width="110">评分</th>
-                  <th width="90">状态</th>
-                  <th width="130">时间</th>
-                  <th width="170">操作</th>
-                </tr>
-              </thead>
-              <tbody id="tbody"><tr><td colspan="8" class="loading">加载中…</td></tr></tbody>
-            </table>
+            <div class="admin-toolbar">
+              <span class="field-icon">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+                <input class="form-control" id="kw" placeholder="评价内容 / 商品名称 / 用户昵称" />
+              </span>
+              <select class="form-control" id="statusSel">
+                <option value="">全部状态</option>
+                <option value="visible">已展示</option>
+                <option value="hidden">已隐藏</option>
+              </select>
+              <button class="btn btn-primary" id="searchBtn" type="button">
+                <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+                查询
+              </button>
+              <button class="btn btn-ghost" id="resetBtn" type="button">重置</button>
+            </div>
+
+            <div class="table-wrap">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th width="70">ID</th>
+                    <th width="130">用户</th>
+                    <th width="190">商品</th>
+                    <th>评价内容</th>
+                    <th width="120">评分</th>
+                    <th width="100">状态</th>
+                    <th width="130">时间</th>
+                    <th width="180">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="tbody"><tr><td colspan="8" class="loading">加载中…</td></tr></tbody>
+              </table>
+              <div class="pagination" id="pagination"></div>
+            </div>
           </div>
-          <div class="pagination" id="pagination"></div>
-        </div>
+        </main>
+        <footer class="admin-foot" id="adminFoot"></footer>
       </div>
     </div>
 
