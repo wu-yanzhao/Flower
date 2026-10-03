@@ -33,7 +33,7 @@ function createApp() {
   // 静态资源：web 目录即前端站点
   app.use(express.static(config.webDir, { extensions: ['html'] }));
 
-  // REST 接口
+  // REST
   app.use('/api', routes);
 
   // 管理端与顾客端的入口页
