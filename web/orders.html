@@ -2,41 +2,37 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>我的订单 - 花间集鲜花商城</title>
     <link rel="icon" href="assets/images/ui/favicon.svg" />
     <link rel="stylesheet" href="assets/css/base.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-    <link rel="stylesheet" href="assets/css/shop.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css" />
   </head>
-  <body>
+  <body class="m-app" data-tab="me" data-mback="user.html" data-mtitle="我的订单">
     <header id="siteHeader"></header>
 
-    <main class="page">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="section-title">我的订单</div>
-            <div class="section-sub">实时跟踪订单状态，支持支付、取消、确认收货与评价</div>
-          </div>
-          <input class="form-control" id="keyword" placeholder="搜索订单号 / 商品名" style="width: 220px; height: 34px" />
-        </div>
-
-        <div class="order-tabs" id="orderTabs">
-          <button class="active" data-status="">全部</button>
-          <button data-status="pending">待付款</button>
-          <button data-status="paid">待发货</button>
-          <button data-status="shipped">待收货</button>
-          <button data-status="completed">已完成</button>
-          <button data-status="canceled">已取消</button>
-        </div>
-
-        <div id="orderList"><div class="loading">加载中…</div></div>
-        <div class="pagination" id="pagination"></div>
+    <main class="m-main m-orders">
+      <div class="m-order-tabs" id="orderTabs">
+        <button class="active" data-status="">全部</button>
+        <button data-status="pending">待付款</button>
+        <button data-status="paid">待发货</button>
+        <button data-status="shipped">待收货</button>
+        <button data-status="completed">已完成</button>
+        <button data-status="canceled">已取消</button>
       </div>
+
+      <div class="m-order-filter">
+        <div class="m-order-search">🔍<input id="keyword" placeholder="搜索订单号 / 商品名，回车搜索" /></div>
+      </div>
+
+      <div id="orderList"><div class="loading">加载中…</div></div>
+      <div class="pagination" id="pagination"></div>
+
+      <div class="m-note m-note-center">🎧 订单有问题？请点击右下角联系在线客服协助处理</div>
+      <div class="m-foot-note">花间集鲜花商城 · 订单数据实时同步</div>
     </main>
 
-    <footer id="siteFooter"></footer>
+    <footer id="siteFooter" style="display: none"></footer>
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/ui.js"></script>

@@ -2,59 +2,71 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>用户登录 - 花间集鲜花商城</title>
     <link rel="icon" href="assets/images/ui/favicon.svg" />
     <link rel="stylesheet" href="assets/css/base.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-    <link rel="stylesheet" href="assets/css/shop.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css" />
   </head>
-  <body>
-    <header id="siteHeader"></header>
+  <body class="m-app m-auth" data-tab="me">
+    <header id="siteHeader" style="display: none"></header>
 
-    <main class="page">
-      <div class="container">
-        <div class="auth-wrap">
-          <div class="auth-art">
-            <img src="assets/images/ui/auth-art.svg" alt="鲜花礼盒" />
-            <h2>欢迎回来 🌸</h2>
-            <p>登录后即可选购鲜花、管理购物车与订单，管理员账号可进入后台管理系统。</p>
-          </div>
-
-          <div class="auth-box">
-            <h3>账号登录</h3>
-            <div class="tip">请使用注册时的账号密码登录</div>
-            <form id="loginForm" autocomplete="off">
-              <div class="form-item">
-                <label class="form-label"><span class="req">*</span>登录账号</label>
-                <input class="form-control" id="username" placeholder="请输入账号（字母开头 3-20 位）" />
-                <div class="form-error" data-error="username"></div>
-              </div>
-              <div class="form-item">
-                <label class="form-label"><span class="req">*</span>登录密码</label>
-                <input class="form-control" id="password" type="password" placeholder="请输入密码（6-20 位）" />
-                <div class="form-error" data-error="password"></div>
-              </div>
-              <button class="btn btn-primary btn-lg btn-block" type="submit" id="loginBtn">登 录</button>
-            </form>
-
-            <div class="auth-switch">还没有账号？<a href="register.html">立即注册</a></div>
-
-            <div class="demo-account">
-              <b>演示账号（答辩演示用）</b><br />
-              管理员：admin / admin123（可进入后台管理）<br />
-              顾客：customer / 123456（已有购物车与历史订单）
-              <div style="margin-top: 8px">
-                <button class="btn btn-ghost btn-sm" data-fill="admin">填入管理员账号</button>
-                <button class="btn btn-ghost btn-sm" data-fill="customer">填入顾客账号</button>
-              </div>
-            </div>
-          </div>
+    <main class="m-main">
+      <!-- 顶部品牌视觉 -->
+      <section class="m-auth-hero">
+        <div class="m-auth-logo">🌸</div>
+        <h2>欢迎回来</h2>
+        <p>登录后即可选购鲜花、管理购物车与订单，管理员账号可进入后台管理系统。</p>
+        <div class="m-auth-chips">
+          <span>🌸 花间集鲜花商城</span><span>当日现采</span><span>同城 2 小时送达</span>
         </div>
-      </div>
+      </section>
+
+      <!-- 登录表单 -->
+      <section class="m-auth-body">
+        <div class="m-auth-title">账号登录</div>
+        <div class="m-auth-sub">请使用注册时的账号密码登录</div>
+        <form id="loginForm" autocomplete="off">
+          <div class="form-item">
+            <label class="form-label"><span class="req">*</span>登录账号</label>
+            <input class="form-control" id="username" placeholder="请输入账号（字母开头 3-20 位）" />
+            <div class="form-error" data-error="username"></div>
+          </div>
+          <div class="form-item">
+            <label class="form-label"><span class="req">*</span>登录密码</label>
+            <input class="form-control" id="password" type="password" placeholder="请输入密码（6-20 位）" />
+            <div class="form-error" data-error="password"></div>
+          </div>
+          <label class="m-remember"><input type="checkbox" checked /> 记住账号<span class="m-remember-tip">忘记密码？请联系客服重置</span></label>
+          <button class="m-btn-primary m-btn-lg" type="submit" id="loginBtn">登 录</button>
+        </form>
+        <div class="m-auth-switch">还没有账号？<a href="register.html">立即注册</a></div>
+      </section>
+
+      <!-- 演示账号 -->
+      <section class="m-auth-demo">
+        <div class="m-demo-title">🧪 演示账号（答辩演示用）</div>
+        <div class="m-demo-row">
+          <div>
+            <b>管理员：admin / admin123</b>
+            <span>可进入后台管理系统，查看商品、订单与用户数据</span>
+          </div>
+          <button class="m-demo-btn" type="button" data-fill="admin">填入管理员账号</button>
+        </div>
+        <div class="m-demo-row">
+          <div>
+            <b>顾客：customer / 123456</b>
+            <span>已有购物车与历史订单，可直接体验下单流程</span>
+          </div>
+          <button class="m-demo-btn" type="button" data-fill="customer">填入顾客账号</button>
+        </div>
+      </section>
+
+      <div class="m-auth-safe">🔒 登录信息全程加密传输，请放心使用</div>
+      <div class="m-foot-note">花间集鲜花商城 · 让每束花都值得被记住</div>
     </main>
 
-    <footer id="siteFooter"></footer>
+    <footer id="siteFooter" style="display: none"></footer>
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/ui.js"></script>

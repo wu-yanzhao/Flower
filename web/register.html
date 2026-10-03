@@ -2,70 +2,87 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>用户注册 - 花间集鲜花商城</title>
     <link rel="icon" href="assets/images/ui/favicon.svg" />
     <link rel="stylesheet" href="assets/css/base.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-    <link rel="stylesheet" href="assets/css/shop.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css" />
   </head>
-  <body>
-    <header id="siteHeader"></header>
+  <body class="m-app m-auth" data-tab="me">
+    <header id="siteHeader" style="display: none"></header>
 
-    <main class="page">
-      <div class="container">
-        <div class="auth-wrap">
-          <div class="auth-art">
-            <img src="assets/images/ui/auth-art.svg" alt="鲜花礼盒" />
-            <h2>加入花间集 🌷</h2>
-            <p>注册即送新人优惠券，生日当月下单可享 9 折优惠。</p>
-          </div>
-
-          <div class="auth-box">
-            <h3>创建账号</h3>
-            <div class="tip">请填写以下信息完成注册，注册后自动登录</div>
-            <form id="registerForm" autocomplete="off">
-              <div class="form-item">
-                <label class="form-label"><span class="req">*</span>登录账号</label>
-                <input class="form-control" id="username" placeholder="3-20 位，字母开头，可含数字下划线" />
-                <div class="form-error" data-error="username"></div>
-              </div>
-              <div class="form-item">
-                <label class="form-label"><span class="req">*</span>登录密码</label>
-                <input class="form-control" id="password" type="password" placeholder="6-20 位" />
-                <div class="form-error" data-error="password"></div>
-              </div>
-              <div class="form-item">
-                <label class="form-label"><span class="req">*</span>确认密码</label>
-                <input class="form-control" id="confirmPassword" type="password" placeholder="请再次输入密码" />
-                <div class="form-error" data-error="confirmPassword"></div>
-              </div>
-              <div class="form-item">
-                <label class="form-label"><span class="req">*</span>用户昵称</label>
-                <input class="form-control" id="nickname" placeholder="如：林小满" />
-                <div class="form-error" data-error="nickname"></div>
-              </div>
-              <div class="form-row">
-                <div class="form-item">
-                  <label class="form-label">手机号</label>
-                  <input class="form-control" id="phone" placeholder="11 位手机号" />
-                  <div class="form-error" data-error="phone"></div>
-                </div>
-                <div class="form-item">
-                  <label class="form-label">邮箱</label>
-                  <input class="form-control" id="email" placeholder="选填" />
-                  <div class="form-error" data-error="email"></div>
-                </div>
-              </div>
-              <button class="btn btn-primary btn-lg btn-block" type="submit" id="registerBtn">注 册</button>
-            </form>
-            <div class="auth-switch">已有账号？<a href="login.html">直接登录</a></div>
-          </div>
+    <main class="m-main">
+      <!-- 顶部品牌视觉 -->
+      <section class="m-auth-hero">
+        <div class="m-auth-logo">🌷</div>
+        <h2>加入花间集</h2>
+        <p>注册即送新人优惠券，生日当月下单可享 9 折优惠。</p>
+        <div class="m-auth-chips">
+          <span>🎁 新人券 30 元</span><span>🎂 生日月 9 折</span>
         </div>
-      </div>
+      </section>
+
+      <!-- 注册表单 -->
+      <section class="m-auth-body">
+        <div class="m-auth-title">创建账号</div>
+        <div class="m-auth-sub">请填写以下信息完成注册，注册后自动登录</div>
+        <form id="registerForm" autocomplete="off">
+          <div class="form-item">
+            <label class="form-label"><span class="req">*</span>登录账号</label>
+            <input class="form-control" id="username" placeholder="请输入 3-20 位登录账号" />
+            <div class="form-error" data-error="username"></div>
+            <div class="m-hint">支持字母、数字与下划线组合，注册后不可修改</div>
+          </div>
+          <div class="form-item">
+            <label class="form-label"><span class="req">*</span>登录密码</label>
+            <input class="form-control" id="password" type="password" placeholder="请输入 6-20 位登录密码" />
+            <div class="form-error" data-error="password"></div>
+            <div class="m-hint">建议包含字母与数字，区分大小写</div>
+          </div>
+          <div class="form-item">
+            <label class="form-label"><span class="req">*</span>确认密码</label>
+            <input class="form-control" id="confirmPassword" type="password" placeholder="请再次输入登录密码" />
+            <div class="form-error" data-error="confirmPassword"></div>
+            <div class="m-hint">两次输入的密码需保持一致</div>
+          </div>
+          <div class="form-item">
+            <label class="form-label"><span class="req">*</span>用户昵称</label>
+            <input class="form-control" id="nickname" placeholder="请输入昵称，如「林小满」" />
+            <div class="form-error" data-error="nickname"></div>
+            <div class="m-hint">2-12 个字符，将展示在订单与评价中</div>
+          </div>
+          <div class="form-item">
+            <label class="form-label">手机号 <span class="badge">选填</span></label>
+            <input class="form-control" id="phone" placeholder="请输入 11 位手机号" />
+            <div class="form-error" data-error="phone"></div>
+            <div class="m-hint">用于接收发货与送达通知，可在个人中心补充</div>
+          </div>
+          <div class="form-item">
+            <label class="form-label">邮箱 <span class="badge">选填</span></label>
+            <input class="form-control" id="email" placeholder="如：huajianji@example.com" />
+            <div class="form-error" data-error="email"></div>
+            <div class="m-hint">用于接收订单与优惠活动通知</div>
+          </div>
+          <label class="m-remember"><input type="checkbox" checked /> 我已阅读并同意《用户服务协议》与《隐私政策》</label>
+          <button class="m-btn-primary m-btn-lg" type="submit" id="registerBtn">注 册</button>
+        </form>
+        <div class="m-auth-switch">已有账号？<a href="login.html">直接登录</a></div>
+      </section>
+
+      <!-- 注册权益 -->
+      <section class="m-auth-demo">
+        <div class="m-demo-title">🎁 注册后可享服务</div>
+        <ul class="m-benefits">
+          <li>在线选购 18 款精选花礼，支持加购与一键下单</li>
+          <li>订单全程可追踪，发货与送达状态实时同步</li>
+          <li>签收后评价晒图可获积分，积分可抵扣订单金额</li>
+        </ul>
+      </section>
+
+      <div class="m-foot-note">花间集鲜花商城 · 让每束花都值得被记住</div>
     </main>
 
-    <footer id="siteFooter"></footer>
+    <footer id="siteFooter" style="display: none"></footer>
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/ui.js"></script>

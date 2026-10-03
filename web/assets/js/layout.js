@@ -21,14 +21,87 @@
     { href: 'user.html', text: '个人中心' },
   ];
 
+  /* 移动端图标（线性图标，跟随 currentColor） */
+  var ICON = {
+    search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>',
+    cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 11h10.2l2.4-8H6"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>',
+    back: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
+    share: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="M8 7l4-3 4 3"/><path d="M5 13v6h14v-6"/></svg>',
+    home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5L12 4l8 6.5"/><path d="M6 10v9h12v-9"/></svg>',
+    grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg>',
+    user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-5.5 7-5.5s7 1.9 7 5.5"/></svg>',
+    headset: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/></svg>',
+  };
+
+  function isMobileApp() {
+    return document.body.classList.contains('m-app');
+  }
+
   function currentPage() {
     var path = location.pathname.split('/').pop() || 'index.html';
     return path;
   }
 
+  /** 移动端顶部栏：首页为品牌 + 搜索/购物车，其它页为返回 + 标题 */
+  function renderMobileHeader(host) {
+    var body = document.body;
+    var isDetail = body.classList.contains('m-detail');
+    var isHome = body.getAttribute('data-mhome') === '1';
+    var title = body.getAttribute('data-mtitle') || '';
+    var back = body.getAttribute('data-mback') || '';
+
+    var left = back
+      ? '<a class="m-icon-btn" href="' + back + '" title="返回">' + ICON.back + '</a>'
+      : '<a class="m-logo" href="index.html">' + LOGO_SVG + '<span>花间集鲜花商城</span></a>';
+
+    var mid = back && title ? '<div class="m-header-title">' + UI.escapeHtml(title) + '</div>' : '';
+
+    var right;
+    if (isHome) {
+      right =
+        '<a class="m-icon-btn" href="flowers.html" title="搜索鲜花">' + ICON.search + '</a>' +
+        '<a class="m-icon-btn" href="cart.html" title="购物车">' + ICON.cart +
+        '<span class="m-badge" id="cartCount">0</span></a>';
+    } else if (isDetail) {
+      right = '<a class="m-icon-btn" href="index.html" title="分享">' + ICON.share + '</a>';
+    } else {
+      right =
+        '<a class="m-icon-btn" href="cart.html" title="购物车">' + ICON.cart +
+        '<span class="m-badge" id="cartCount">0</span></a>';
+    }
+
+    host.innerHTML =
+      '<div class="m-header' + (isDetail ? ' m-header-transparent' : '') + '">' +
+      left + mid + '<div class="m-header-actions">' + right + '</div></div>';
+  }
+
+  /** 移动端底部 TabBar */
+  function renderMobileTabbar(host) {
+    var tab = document.body.getAttribute('data-tab') || 'home';
+    var items = [
+      { key: 'home', href: 'index.html', text: '首页', icon: ICON.home },
+      { key: 'category', href: 'flowers.html', text: '分类', icon: ICON.grid },
+      { key: 'cart', href: 'cart.html', text: '购物车', icon: ICON.cart },
+      { key: 'me', href: 'user.html', text: '我的', icon: ICON.user },
+    ];
+    host.innerHTML =
+      '<nav class="m-tabbar">' +
+      items
+        .map(function (it) {
+          var cls = it.key === tab ? ' class="active"' : '';
+          return '<a' + cls + ' href="' + it.href + '">' + it.icon + '<span>' + it.text + '</span></a>';
+        })
+        .join('') +
+      '</nav>';
+  }
+
   function renderHeader() {
     var host = document.getElementById('siteHeader');
     if (!host) return;
+    if (isMobileApp()) {
+      renderMobileHeader(host);
+      return;
+    }
     var page = currentPage();
     var user = global.Auth.getUser();
 
@@ -120,6 +193,10 @@
   function renderFooter() {
     var host = document.getElementById('siteFooter');
     if (!host) return;
+    if (isMobileApp()) {
+      renderMobileTabbar(host);
+      return;
+    }
     host.innerHTML =
       '<div class="container">' +
       '<div class="footer-cols">' +
@@ -175,5 +252,6 @@
     refreshCartCount: refreshCartCount,
     requireLogin: requireLogin,
     LOGO_SVG: LOGO_SVG,
+    ICON: ICON,
   };
 })(window);

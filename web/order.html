@@ -2,59 +2,52 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>订单详情 - 花间集鲜花商城</title>
     <link rel="icon" href="assets/images/ui/favicon.svg" />
     <link rel="stylesheet" href="assets/css/base.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-    <link rel="stylesheet" href="assets/css/shop.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css" />
   </head>
-  <body>
+  <body class="m-app m-od" data-tab="me" data-mback="orders.html" data-mtitle="订单详情">
     <header id="siteHeader"></header>
 
-    <main class="page">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="section-title">订单详情</div>
-            <div class="section-sub" id="orderStatusTip">加载中…</div>
-          </div>
-          <a class="muted" href="orders.html">← 返回我的订单</a>
-        </div>
+    <main class="m-main">
+      <div class="checkout-layout">
+        <section class="m-od-hero">
+          <div class="m-od-status" id="orderStatusTip">加载中…</div>
+        </section>
 
-        <div class="checkout-layout">
-          <div>
-            <div class="card" style="margin-bottom: 16px">
-              <h4 style="font-size: 15px; margin-bottom: 14px">订单跟踪</h4>
-              <div class="timeline" id="timeline"><div class="loading">加载中…</div></div>
-            </div>
+        <section class="m-card">
+          <div class="m-card-head"><span class="m-card-title">订单跟踪</span></div>
+          <div class="timeline" id="timeline"><div class="loading">加载中…</div></div>
+        </section>
 
-            <div class="card" style="margin-bottom: 16px">
-              <h4 style="font-size: 15px; margin-bottom: 14px">商品清单</h4>
-              <table class="table">
-                <thead>
-                  <tr><th>商品</th><th>单价</th><th>数量</th><th>小计</th></tr>
-                </thead>
-                <tbody id="goodsBody"></tbody>
-              </table>
-            </div>
+        <section class="m-card">
+          <div class="m-card-head"><span class="m-card-title">商品清单</span></div>
+          <table class="table">
+            <thead>
+              <tr><th>商品</th><th>单价</th><th>数量</th><th>小计</th></tr>
+            </thead>
+            <tbody id="goodsBody"></tbody>
+          </table>
+          <div class="m-note">鲜花为生鲜商品，签收后 7 天内如有质量问题可申请退换。</div>
+        </section>
 
-            <div class="card">
-              <h4 style="font-size: 15px; margin-bottom: 14px">收货与物流信息</h4>
-              <div id="shippingInfo"></div>
-            </div>
-          </div>
+        <section class="m-card">
+          <div class="m-card-head"><span class="m-card-title">收货与物流信息</span></div>
+          <div id="shippingInfo"></div>
+        </section>
 
-          <div class="summary-box">
-            <h4 style="font-size: 15px; margin-bottom: 14px">订单信息</h4>
-            <div id="orderMeta"></div>
-            <div style="margin-top: 16px" id="orderActions"></div>
-          </div>
-        </div>
+        <section class="m-card">
+          <div class="m-card-head"><span class="m-card-title">订单信息</span></div>
+          <div id="orderMeta"></div>
+        </section>
       </div>
     </main>
 
-    <footer id="siteFooter"></footer>
+    <div class="m-bottom-bar m-od-actions" id="orderActions"></div>
+
+    <footer id="siteFooter" style="display: none"></footer>
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/ui.js"></script>

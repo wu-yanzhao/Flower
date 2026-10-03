@@ -2,125 +2,137 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>个人中心 - 花间集鲜花商城</title>
     <link rel="icon" href="assets/images/ui/favicon.svg" />
     <link rel="stylesheet" href="assets/css/base.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-    <link rel="stylesheet" href="assets/css/shop.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css" />
   </head>
-  <body>
+  <body class="m-app" data-tab="me" data-mback="index.html" data-mtitle="个人中心">
     <header id="siteHeader"></header>
 
-    <main class="page">
-      <div class="container">
-        <div class="section-head">
-          <div>
-            <div class="section-title">个人中心</div>
-            <div class="section-sub">管理资料、收货地址、收藏与登录密码</div>
+    <main class="m-main m-user">
+      <!-- 用户信息区 -->
+      <section class="m-user-hero">
+        <div class="m-user-row">
+          <div class="m-user-avatar" id="uAvatar">花</div>
+          <div class="m-user-meta">
+            <div class="m-user-name" id="uNickname">—</div>
           </div>
         </div>
-
-        <div class="user-layout">
-          <aside class="user-nav" id="userNav">
-            <a class="active" data-tab="profile">个人资料</a>
-            <a data-tab="addresses">收货地址</a>
-            <a data-tab="favorites">我的收藏</a>
-            <a data-tab="security">修改密码</a>
-          </aside>
-
-          <div>
-            <div class="card" style="margin-bottom: 18px">
-              <div class="user-card-head">
-                <div class="big-avatar" id="uAvatar">花</div>
-                <div style="flex: 1">
-                  <div style="font-size: 18px; font-weight: 700" id="uNickname">—</div>
-                  <div class="muted text-sm" id="uAccount">—</div>
-                </div>
-                <button class="btn btn-ghost btn-sm" id="logoutBtn2">退出登录</button>
-              </div>
-              <div class="stat-row">
-                <div class="stat-mini"><b id="sOrder">0</b><span>累计订单</span></div>
-                <div class="stat-mini"><b id="sFav">0</b><span>我的收藏</span></div>
-                <div class="stat-mini"><b id="sCart">0</b><span>购物车</span></div>
-                <div class="stat-mini"><b id="sRole">顾客</b><span>账号角色</span></div>
-              </div>
-            </div>
-
-            <!-- 个人资料 -->
-            <div class="card tab-pane" id="pane-profile">
-              <h4 style="font-size: 15px; margin-bottom: 16px">修改个人资料</h4>
-              <form id="profileForm">
-                <div class="form-row">
-                  <div class="form-item">
-                    <label class="form-label">用户昵称</label>
-                    <input class="form-control" id="pNickname" />
-                    <div class="form-error" data-error="nickname"></div>
-                  </div>
-                  <div class="form-item">
-                    <label class="form-label">登录账号</label>
-                    <input class="form-control" id="pUsername" disabled />
-                  </div>
-                </div>
-                <div class="form-row">
-                  <div class="form-item">
-                    <label class="form-label">手机号</label>
-                    <input class="form-control" id="pPhone" />
-                    <div class="form-error" data-error="phone"></div>
-                  </div>
-                  <div class="form-item">
-                    <label class="form-label">邮箱</label>
-                    <input class="form-control" id="pEmail" />
-                    <div class="form-error" data-error="email"></div>
-                  </div>
-                </div>
-                <button class="btn btn-primary" type="submit">保存资料</button>
-              </form>
-            </div>
-
-            <!-- 收货地址 -->
-            <div class="card tab-pane" id="pane-addresses" style="display: none">
-              <div class="flex-between" style="margin-bottom: 14px">
-                <h4 style="font-size: 15px">收货地址管理</h4>
-                <button class="btn btn-outline btn-sm" id="addAddressBtn">+ 新增地址</button>
-              </div>
-              <div class="address-list" id="addrList"><div class="loading">加载中…</div></div>
-            </div>
-
-            <!-- 我的收藏 -->
-            <div class="card tab-pane" id="pane-favorites" style="display: none">
-              <h4 style="font-size: 15px; margin-bottom: 14px">我的收藏</h4>
-              <div class="flower-grid" id="favGrid"><div class="loading">加载中…</div></div>
-            </div>
-
-            <!-- 修改密码 -->
-            <div class="card tab-pane" id="pane-security" style="display: none">
-              <h4 style="font-size: 15px; margin-bottom: 16px">修改登录密码</h4>
-              <form id="pwdForm" style="max-width: 420px">
-                <div class="form-item">
-                  <label class="form-label">原密码</label>
-                  <input class="form-control" id="oldPwd" type="password" />
-                  <div class="form-error" data-error="oldPassword"></div>
-                </div>
-                <div class="form-item">
-                  <label class="form-label">新密码</label>
-                  <input class="form-control" id="newPwd" type="password" placeholder="6-20 位" />
-                  <div class="form-error" data-error="newPassword"></div>
-                </div>
-                <div class="form-item">
-                  <label class="form-label">确认新密码</label>
-                  <input class="form-control" id="confirmPwd" type="password" />
-                  <div class="form-error" data-error="confirm"></div>
-                </div>
-                <button class="btn btn-primary" type="submit">确认修改</button>
-              </form>
-            </div>
-          </div>
+        <div class="m-user-account" id="uAccount">—</div>
+        <div class="m-user-stats">
+          <div><b id="sOrder">0</b><span>累计订单</span></div>
+          <div><b id="sFav">0</b><span>我的收藏</span></div>
+          <div><b id="sCart">0</b><span>购物车</span></div>
         </div>
+        <div class="m-user-chips">
+          <span class="m-chip">🎫 账号角色 <b id="sRole">顾客</b></span>
+          <span class="m-chip">🌸 花间集会员</span>
+        </div>
+      </section>
+
+      <!-- 功能 Tab -->
+      <nav class="m-user-tabs" id="userNav">
+        <a class="active" data-tab="profile">个人资料</a>
+        <a data-tab="addresses">收货地址</a>
+        <a data-tab="favorites">我的收藏</a>
+        <a data-tab="security">修改密码</a>
+      </nav>
+
+      <div class="m-user-body">
+        <!-- 个人资料 -->
+        <div class="tab-pane" id="pane-profile">
+          <div class="m-pane-head">
+            <span class="m-pane-title">基础资料</span>
+            <span class="muted">账号信息不可修改</span>
+          </div>
+          <form id="profileForm">
+            <div class="form-item">
+              <label class="form-label">用户昵称 <span class="req">*</span></label>
+              <input class="form-control" id="pNickname" />
+              <div class="form-error" data-error="nickname"></div>
+              <div class="m-hint">2-12 个字符，将展示在订单与评价中</div>
+            </div>
+            <div class="form-item">
+              <label class="form-label">登录账号 <span class="badge">不可编辑</span></label>
+              <input class="form-control" id="pUsername" disabled />
+              <div class="m-hint">登录账号注册后不可修改，如需变更请联系客服</div>
+            </div>
+            <div class="form-item">
+              <label class="form-label">手机号 <span class="badge">选填</span></label>
+              <input class="form-control" id="pPhone" placeholder="请输入 11 位手机号" />
+              <div class="form-error" data-error="phone"></div>
+              <div class="m-hint m-hint-ok">用于接收发货与送达通知</div>
+            </div>
+            <div class="form-item">
+              <label class="form-label">邮箱 <span class="badge">选填</span></label>
+              <input class="form-control" id="pEmail" placeholder="请输入常用邮箱" />
+              <div class="form-error" data-error="email"></div>
+              <div class="m-hint">用于接收订单与优惠活动通知</div>
+            </div>
+            <button class="m-btn-primary" type="submit">保存资料</button>
+          </form>
+          <div class="m-note m-note-ok">资料仅用于订单配送与售后联系，不会对外公开</div>
+        </div>
+
+        <!-- 收货地址 -->
+        <div class="tab-pane" id="pane-addresses" style="display: none">
+          <div class="m-pane-head">
+            <span class="m-pane-title">收货地址</span>
+            <button class="m-link-btn" id="addAddressBtn">+ 新增地址</button>
+          </div>
+          <div class="address-list" id="addrList"><div class="loading">加载中…</div></div>
+          <div class="m-note">鲜花为生鲜商品，下单后不支持修改地址，请仔细核对收货信息。</div>
+        </div>
+
+        <!-- 我的收藏 -->
+        <div class="tab-pane" id="pane-favorites" style="display: none">
+          <div class="m-pane-head">
+            <span class="m-pane-title">已收藏的花礼</span>
+            <a class="muted" href="flowers.html">去逛逛 →</a>
+          </div>
+          <div class="flower-grid" id="favGrid"><div class="loading">加载中…</div></div>
+          <div class="m-note">取消全部收藏后将显示空状态；点击 ♥ 可取消收藏。</div>
+        </div>
+
+        <!-- 修改密码 -->
+        <div class="tab-pane" id="pane-security" style="display: none">
+          <div class="m-pane-head">
+            <span class="m-pane-title">修改登录密码</span>
+            <span class="badge badge-success">安全等级 高</span>
+          </div>
+          <form id="pwdForm">
+            <div class="form-item">
+              <label class="form-label">原密码 <span class="req">*</span></label>
+              <input class="form-control" id="oldPwd" type="password" placeholder="请输入当前登录密码" />
+              <div class="form-error" data-error="oldPassword"></div>
+              <div class="m-hint">用于验证账号身份，请输入当前使用的密码</div>
+            </div>
+            <div class="form-item">
+              <label class="form-label">新密码 <span class="req">*</span></label>
+              <input class="form-control" id="newPwd" type="password" placeholder="请输入 6-20 位新密码" />
+              <div class="form-error" data-error="newPassword"></div>
+              <div class="m-hint">建议包含字母与数字，区分大小写</div>
+            </div>
+            <div class="form-item">
+              <label class="form-label">确认新密码 <span class="req">*</span></label>
+              <input class="form-control" id="confirmPwd" type="password" placeholder="请再次输入新密码" />
+              <div class="form-error" data-error="confirm"></div>
+              <div class="m-hint">两次输入的新密码需保持一致</div>
+            </div>
+            <button class="m-btn-primary" type="submit">确认修改</button>
+          </form>
+          <div class="m-note m-note-ok">修改成功后当前登录仍有效，其他设备需重新登录</div>
+        </div>
+
+        <!-- 退出登录 -->
+        <button class="m-logout" id="logoutBtn2" type="button">退出登录</button>
+        <div class="m-foot-note">花间集鲜花商城 · 顾客端 V1.0</div>
       </div>
     </main>
 
-    <footer id="siteFooter"></footer>
+    <footer id="siteFooter" style="display: none"></footer>
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/ui.js"></script>

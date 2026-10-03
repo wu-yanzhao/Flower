@@ -2,50 +2,60 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>订单支付 - 花间集鲜花商城</title>
     <link rel="icon" href="assets/images/ui/favicon.svg" />
     <link rel="stylesheet" href="assets/css/base.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-    <link rel="stylesheet" href="assets/css/shop.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css" />
   </head>
-  <body>
+  <body class="m-app" data-tab="me" data-mback="orders.html" data-mtitle="订单支付">
     <header id="siteHeader"></header>
 
-    <main class="page">
-      <div class="container">
-        <div class="pay-box">
-          <div class="muted">订单号 <span id="payOrderNo">—</span></div>
-          <div class="pay-amount" id="payAmount">¥0</div>
-          <div class="muted text-sm">请在 <b id="countdown" style="color: #e4577a">30:00</b> 内完成支付，超时订单将自动关闭</div>
+    <main class="m-main m-pay">
+      <div class="pay-box">
+        <div class="m-pay-head">
+          <div class="m-pay-label">应付金额</div>
+          <div class="m-pay-amount" id="payAmount">¥0</div>
+          <div class="m-pay-count">⏱ 请在 <b id="countdown">30:00</b> 内完成支付，超时订单将自动关闭</div>
+          <div class="m-pay-orderno">订单号 <span id="payOrderNo">—</span></div>
+        </div>
 
-          <div class="pay-methods" id="payMethods">
-            <div class="pay-method active" data-method="微信支付">
-              <div class="mi" style="background: #3fae5a">微</div>
-              <div><b>微信支付</b><div class="muted text-sm">推荐使用，支持零钱与银行卡</div></div>
-            </div>
-            <div class="pay-method" data-method="支付宝">
-              <div class="mi" style="background: #1a9bf0">支</div>
-              <div><b>支付宝</b><div class="muted text-sm">支持花呗分期</div></div>
-            </div>
-            <div class="pay-method" data-method="余额支付">
-              <div class="mi" style="background: #d9a441">余</div>
-              <div><b>余额支付</b><div class="muted text-sm">账户余额 ¥1,280.00</div></div>
-            </div>
+        <div class="m-card-head" style="padding: 0 14px">
+          <span class="m-card-title">选择支付方式</span>
+          <span class="muted">🔒 安全加密</span>
+        </div>
+        <div class="pay-methods" id="payMethods">
+          <div class="pay-method active" data-method="微信支付">
+            <div class="mi" style="background: #3fae5a">微</div>
+            <div class="mt"><b>微信支付 <span class="badge badge-primary">推荐</span></b><span>推荐使用，支持零钱与银行卡</span></div>
+            <span class="radio"></span>
           </div>
-
-          <button class="btn btn-primary btn-lg btn-block" id="confirmPay">确认支付</button>
-          <div style="margin-top: 14px">
-            <a class="muted text-sm" href="orders.html">稍后再付，查看我的订单</a>
+          <div class="pay-method" data-method="支付宝">
+            <div class="mi" style="background: #1a9bf0">支</div>
+            <div class="mt"><b>支付宝</b><span>支持花呗分期</span></div>
+            <span class="radio"></span>
           </div>
-          <div class="alert alert-warning" style="margin-top: 18px; text-align: left">
-            说明：本项目为毕业设计演示系统，支付环节为<b>模拟支付</b>，不接入真实支付渠道，点击确认支付后订单状态将流转为「待发货」。
+          <div class="pay-method" data-method="余额支付">
+            <div class="mi" style="background: #d9a441">余</div>
+            <div class="mt"><b>余额支付</b><span>账户余额 ¥1,280.00</span></div>
+            <span class="radio"></span>
           </div>
         </div>
+
+        <div class="m-pay-tips">
+          <div>🔒 支付链路全程加密，花间集不存储银行卡信息</div>
+          <div>↩️ 支付异常或重复扣款，将于 1 个工作日内原路退回</div>
+          <div>🎧 支付遇到问题？请点击右下角联系在线客服协助处理</div>
+        </div>
+
+        <button class="m-btn-primary m-btn-lg" id="confirmPay" type="button">确认支付</button>
+        <a class="m-pay-later" href="orders.html">稍后再付，查看我的订单 →</a>
+
+        <div class="m-note">本项目为毕业设计演示系统，支付环节为<b>模拟支付</b>，不接入真实支付渠道，点击确认支付后订单状态将流转为「待发货」。</div>
       </div>
     </main>
 
-    <footer id="siteFooter"></footer>
+    <footer id="siteFooter" style="display: none"></footer>
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/ui.js"></script>

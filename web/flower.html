@@ -2,115 +2,117 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>鲜花详情 - 花间集鲜花商城</title>
     <link rel="icon" href="assets/images/ui/favicon.svg" />
     <link rel="stylesheet" href="assets/css/base.css" />
-    <link rel="stylesheet" href="assets/css/layout.css" />
-    <link rel="stylesheet" href="assets/css/shop.css" />
+    <link rel="stylesheet" href="assets/css/mobile.css" />
   </head>
-  <body>
+  <body class="m-app m-detail" data-tab="home" data-mback="flowers.html">
     <header id="siteHeader"></header>
 
-    <main class="page">
-      <div class="container">
-        <div class="muted text-sm" style="margin-bottom: 12px">
-          <a href="index.html">首页</a> / <a href="flowers.html">全部鲜花</a> / <span id="crumb">商品详情</span>
+    <main class="m-main">
+      <div class="detail-layout">
+        <!-- 商品图 -->
+        <div class="m-gallery">
+          <img class="gallery-main" id="mainImg" src="assets/images/ui/no-image.svg" alt="鲜花" />
+          <div class="m-gallery-count">实拍图</div>
+          <button class="m-detail-fav" id="favBtn">♡ 收藏</button>
         </div>
 
-        <div class="detail-layout">
-          <div class="gallery">
-            <img class="gallery-main" id="mainImg" src="assets/images/ui/no-image.svg" alt="鲜花" />
-            <div class="promise" style="margin-top: 14px">
-              <span>当日现采</span><span>花艺师手工</span><span>冷链配送</span><span>不新鲜重做</span>
-            </div>
+        <!-- 基本信息 -->
+        <section class="m-sec m-card m-detail-head">
+          <span class="visually-hidden" id="crumb"></span>
+          <h1 id="fName">加载中…</h1>
+          <div class="m-detail-tags" id="fSubtitle"></div>
+
+          <div class="m-price-row">
+            <span class="m-price" id="fPrice">¥0</span>
+            <span class="price-old" id="fOldPrice"></span>
+            <span class="badge badge-primary" id="fDiscount"></span>
+            <span class="m-sales">月销 <b id="fSales">0</b> 束</span>
           </div>
 
-          <div class="detail-info">
-            <h1 id="fName">加载中…</h1>
-            <div class="subtitle" id="fSubtitle"></div>
-
-            <div class="price-panel">
-              <div class="row">
-                <span class="price" id="fPrice">¥0</span>
-                <span class="price-old" id="fOldPrice"></span>
-                <span class="badge badge-primary" id="fDiscount"></span>
-              </div>
-              <div class="row">
-                <span id="fRating"></span>
-                <span class="muted">|</span>
-                <span>已售 <b id="fSales">0</b> 束</span>
-                <span class="muted">|</span>
-                <span>库存 <b id="fStock">0</b> 束</span>
-              </div>
-              <div class="row">
-                <span class="badge badge-success">满 300 减 20</span>
-                <span class="badge badge-warning">满 500 减 50</span>
-                <span class="badge badge-info">支持货到付款</span>
-              </div>
-            </div>
-
-            <div class="attr-item">
-              <div class="k">花　语</div>
-              <div id="fLanguage"></div>
-            </div>
-            <div class="attr-item">
-              <div class="k">花　材</div>
-              <div id="fMaterial"></div>
-            </div>
-            <div class="attr-item">
-              <div class="k">包　装</div>
-              <div id="fPacking"></div>
-            </div>
-            <div class="attr-item">
-              <div class="k">数　量</div>
-              <div class="stepper">
-                <button id="qtyMinus">−</button>
-                <input id="qtyInput" value="1" />
-                <button id="qtyPlus">+</button>
-              </div>
-              <span class="muted text-sm" style="margin-left: 10px" id="stockTip"></span>
-            </div>
-
-            <div class="detail-actions">
-              <button class="btn btn-primary" id="buyNowBtn">立即购买</button>
-              <button class="btn btn-outline" id="addCartBtn">加入购物车</button>
-              <button class="btn btn-ghost" id="favBtn">♡ 收藏</button>
-            </div>
-
-            <div class="promise">
-              <span>支持 7 天无理由退换</span><span>配送时间可备注</span><span>免费赠送贺卡</span>
-            </div>
+          <div class="m-rate-row">
+            <span id="fRating"></span>
+            <span class="m-good">好评率 98%</span>
           </div>
-        </div>
 
-        <!-- 详情 Tab -->
-        <section class="section" style="margin-top: 36px">
+          <div class="m-promise-row">
+            <span>同城 2 小时送达</span><span>当日采摘</span><span>7 天可退换</span>
+          </div>
+
+          <div class="m-qty-row">
+            <span class="k">数量</span>
+            <span class="stepper">
+              <button id="qtyMinus">−</button>
+              <input id="qtyInput" value="1" />
+              <button id="qtyPlus">+</button>
+            </span>
+            <span class="muted text-sm" id="stockTip"></span>
+            <span class="muted text-sm" style="margin-left: auto">库存 <b id="fStock">0</b> 束</span>
+          </div>
+        </section>
+
+        <!-- 花语 / 花材 / 包装 -->
+        <section class="m-sec m-card m-params">
+          <div class="m-param"><span class="k">花　语</span><span class="v" id="fLanguage"></span></div>
+          <div class="m-param"><span class="k">花　材</span><span class="v" id="fMaterial"></span></div>
+          <div class="m-param"><span class="k">包　装</span><span class="v" id="fPacking"></span></div>
+        </section>
+
+        <!-- 商品详情 / 用户评价 -->
+        <section class="m-sec">
           <div class="tabs" id="detailTabs">
             <button class="active" data-tab="desc">商品详情</button>
             <button data-tab="review">用户评价（<span id="reviewCount">0</span>）</button>
           </div>
-          <div class="detail-extra" id="tabDesc"></div>
-          <div class="detail-extra" id="tabReview" style="display: none">
+          <div class="m-card detail-extra" id="tabDesc"></div>
+          <div class="m-card detail-extra" id="tabReview" style="display: none">
             <div id="reviewList"></div>
             <div class="pagination" id="reviewPages"></div>
           </div>
         </section>
 
-        <!-- 相关推荐 -->
-        <section class="section">
-          <div class="section-head"><div class="section-title">为你推荐</div></div>
-          <div class="flower-grid" id="relatedGrid"><div class="loading">加载中…</div></div>
+        <!-- 猜你喜欢 -->
+        <section class="m-sec">
+          <div class="m-sec-head">
+            <div class="m-sec-title">猜你喜欢</div>
+            <a class="m-more" href="flowers.html">查看更多 →</a>
+          </div>
+          <div class="flower-grid m-grid-3" id="relatedGrid"><div class="loading">加载中…</div></div>
         </section>
       </div>
     </main>
 
-    <footer id="siteFooter"></footer>
+    <!-- 底部操作栏 -->
+    <div class="m-actionbar">
+      <a class="m-act-icon" href="javascript:;" id="serviceBtn" title="在线客服">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13v-1a8 8 0 0 1 16 0v1"/><rect x="3" y="13" width="4" height="6" rx="1.5"/><rect x="17" y="13" width="4" height="6" rx="1.5"/></svg>
+        <span>客服</span>
+      </a>
+      <a class="m-act-icon" href="cart.html" title="购物车">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 11h10.2l2.4-8H6"/><circle cx="9" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>
+        <span>购物车</span>
+      </a>
+      <div class="m-act-btns">
+        <button id="addCartBtn">加入购物车</button>
+        <button id="buyNowBtn">立即购买</button>
+      </div>
+    </div>
+
+    <footer id="siteFooter" style="display: none"></footer>
 
     <script src="assets/js/api.js"></script>
     <script src="assets/js/ui.js"></script>
     <script src="assets/js/components.js"></script>
     <script src="assets/js/layout.js"></script>
     <script src="assets/js/flower.js"></script>
+    <script>
+      /* 在线客服占位提示 */
+      document.getElementById('serviceBtn').addEventListener('click', function () {
+        window.UI.toast('客服电话：400-888-8866（09:00-21:00）');
+      });
+    </script>
   </body>
 </html>
