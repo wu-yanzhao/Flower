@@ -31,7 +31,13 @@ function createApp() {
   app.use(requestLogger);
 
   // 静态资源：web 目录即前端站点
-  app.use(express.static(config.webDir, { extensions: ['html'] }));
+  // setHeaders 补充 AVIF 的 MIME（express 内置 mime 可能未登记，避免被识别为 octet-stream）
+  app.use(express.static(config.webDir, {
+    extensions: ['html'],
+    setHeaders: (res, filePath) => {
+      if (filePath.toLowerCase().endsWith('.avif')) res.setHeader('Content-Type', 'image/avif');
+    },
+  }));
 
   // REST
   app.use('/api', routes);

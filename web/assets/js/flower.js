@@ -19,6 +19,7 @@
     document.title = data.name + ' - 花间集鲜花商城';
     document.getElementById('crumb').textContent = data.name;
     document.getElementById('mainImg').src = data.image || 'assets/images/ui/no-image.svg';
+    document.getElementById('mainImg').alt = data.name || '鲜花';
     document.getElementById('fName').textContent = data.name;
     document.getElementById('fSubtitle').textContent = data.subtitle || '';
     document.getElementById('fPrice').textContent = '¥' + UI.money(data.price);

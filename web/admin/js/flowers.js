@@ -7,13 +7,29 @@
   var state = { keyword: '', categoryId: '', status: '', page: 1, pageSize: 10 };
   var categories = [];
 
+  // 商品图片候选：image/ 目录下的真实花材照片（ASCII 文件名，经 scripts/gen_images.py 复制）
+  var FLOWER_IMAGES = [
+    '/assets/images/flowers/rose-red.avif',
+    '/assets/images/flowers/rose-champagne.avif',
+    '/assets/images/flowers/rose-pink.jpg',
+    '/assets/images/flowers/rose-blue.jpg',
+    '/assets/images/flowers/rose-white.jpg',
+    '/assets/images/flowers/sunflower.jpg',
+    '/assets/images/flowers/babybreath.jpg',
+    '/assets/images/flowers/carnation-pink.jpg',
+    '/assets/images/flowers/carnation-red.jpg',
+    '/assets/images/flowers/carnation-common.jpg',
+    '/assets/images/flowers/lily-white.jpg',
+    '/assets/images/flowers/tulip.jpg',
+    '/assets/images/flowers/preserved.jpg',
+    '/assets/images/flowers/eucalyptus.jpg',
+    '/assets/images/flowers/daylily.jpg'
+  ];
+
   function imageOptions() {
-    var html = '';
-    for (var i = 1; i <= 18; i += 1) {
-      var path = '/assets/images/flowers/flower-' + String(i).padStart(2, '0') + '.svg';
-      html += '<img src="' + path + '" data-img="' + path + '" alt=""/>';
-    }
-    return html;
+    return FLOWER_IMAGES.map(function (path) {
+      return '<img src="' + path + '" data-img="' + path + '" alt=""/>';
+    }).join('');
   }
 
   function loadCategories() {
@@ -103,9 +119,9 @@
       '<div class="form-item full"><label class="form-label">商品描述</label>' +
       '<textarea class="form-control" id="fDesc">' + UI.escapeHtml(flower ? flower.description : '') + '</textarea></div>' +
       '<div class="form-item full"><label class="form-label">商品图片（点击选择）</label>' +
-      '<input class="form-control" id="fImage" value="' + (flower ? flower.image : '/assets/images/flowers/flower-01.svg') + '"/>' +
+      '<input class="form-control" id="fImage" value="' + (flower ? flower.image : FLOWER_IMAGES[0]) + '"/>' +
       '<div class="image-picker" id="fImagePicker">' + imageOptions() + '</div>' +
-      '<img class="preview-img" id="fPreview" src="' + (flower && flower.image ? flower.image : '/assets/images/flowers/flower-01.svg') + '"/></div>' +
+      '<img class="preview-img" id="fPreview" src="' + (flower && flower.image ? flower.image : FLOWER_IMAGES[0]) + '"/></div>' +
       '<div class="form-item full"><label class="text-sm"><input type="checkbox" id="fRecommend" ' +
       (flower && flower.recommended ? 'checked' : '') + '/> 首页推荐位展示</label></div>' +
       '<div class="form-error full" id="fError"></div>' +

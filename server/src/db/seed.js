@@ -43,30 +43,32 @@ function flower(cid, name, subtitle, price, originalPrice, stock, sales, image, 
   );
 }
 
+// 商品主图统一使用 image/ 目录下的真实花材照片（经 scripts/gen_images.py 复制至
+// web/assets/images/flowers/，并以 ASCII 文件名命名）。flower-NN.svg 已废弃删除。
 const FLOWERS = [
-  flower(1, '一生挚爱·红玫瑰 33 朵', '经典 33 朵红玫瑰，告白首选', 399, 568, 60, 1286, '/assets/images/flowers/flower-01.svg', { recommended: 1, flower_language: '一生一世，只爱你一人', material: '主花材：A 级红玫瑰 33 朵；配材：尤加利叶', rating: 4.9 }),
-  flower(1, '怦然心动·香槟玫瑰 19 朵', '温柔香槟色，送给心动的她', 299, 398, 45, 862, '/assets/images/flowers/flower-02.svg', { recommended: 1, flower_language: '你是我所有温柔的归处', material: '主花材：香槟玫瑰 19 朵；配材：白色满天星', rating: 4.8 }),
-  flower(1, '甜蜜告白·粉玫瑰 11 朵', '初恋般的粉色悸动', 199, 268, 80, 1543, '/assets/images/flowers/flower-03.svg', { recommended: 1, flower_language: '喜欢你，是我藏不住的心事', rating: 4.7 }),
-  flower(1, '蓝色妖姬·永生蓝玫瑰', '神秘高雅，独一无二的浪漫', 459, 599, 30, 421, '/assets/images/flowers/flower-04.svg', { flower_language: '奇迹与不可能的爱', rating: 4.6 }),
+  flower(1, '一生挚爱·红玫瑰 33 朵', '经典 33 朵红玫瑰，告白首选', 399, 568, 60, 1286, '/assets/images/flowers/rose-red.avif', { recommended: 1, flower_language: '一生一世，只爱你一人', material: '主花材：A 级红玫瑰 33 朵；配材：尤加利叶', rating: 4.9 }),
+  flower(1, '怦然心动·香槟玫瑰 19 朵', '温柔香槟色，送给心动的她', 299, 398, 45, 862, '/assets/images/flowers/rose-champagne.avif', { recommended: 1, flower_language: '你是我所有温柔的归处', material: '主花材：香槟玫瑰 19 朵；配材：白色满天星', rating: 4.8 }),
+  flower(1, '甜蜜告白·粉玫瑰 11 朵', '初恋般的粉色悸动', 199, 268, 80, 1543, '/assets/images/flowers/rose-pink.jpg', { recommended: 1, flower_language: '喜欢你，是我藏不住的心事', rating: 4.7 }),
+  flower(1, '蓝色妖姬·永生蓝玫瑰', '神秘高雅，独一无二的浪漫', 459, 599, 30, 421, '/assets/images/flowers/rose-blue.jpg', { flower_language: '奇迹与不可能的爱', rating: 4.6 }),
 
-  flower(2, '生日快乐·向日葵混搭花束', '阳光向日葵，祝你岁岁欢愉', 259, 328, 70, 976, '/assets/images/flowers/flower-05.svg', { recommended: 1, flower_language: '愿你如向日葵般明媚', material: '主花材：向日葵 5 支、香槟玫瑰 9 朵', rating: 4.9 }),
-  flower(2, '星河璀璨·满天星花束', '满天星点缀，浪漫不张扬', 189, 258, 90, 1132, '/assets/images/flowers/flower-06.svg', { flower_language: '我甘愿做配角，只为你闪耀', rating: 4.7 }),
-  flower(2, '童话公主·粉紫混搭花束', '少女心满满的生日惊喜', 329, 428, 55, 642, '/assets/images/flowers/flower-07.svg', { flower_language: '愿你永远被宠成公主', rating: 4.8 }),
+  flower(2, '生日快乐·向日葵混搭花束', '阳光向日葵，祝你岁岁欢愉', 259, 328, 70, 976, '/assets/images/flowers/sunflower.jpg', { recommended: 1, flower_language: '愿你如向日葵般明媚', material: '主花材：向日葵 5 支、香槟玫瑰 9 朵', rating: 4.9 }),
+  flower(2, '星河璀璨·满天星花束', '满天星点缀，浪漫不张扬', 189, 258, 90, 1132, '/assets/images/flowers/babybreath.jpg', { flower_language: '我甘愿做配角，只为你闪耀', rating: 4.7 }),
+  flower(2, '童话公主·粉紫混搭花束', '少女心满满的生日惊喜', 329, 428, 55, 642, '/assets/images/flowers/rose-pink.jpg', { flower_language: '愿你永远被宠成公主', rating: 4.8 }),
 
-  flower(3, '母爱如歌·康乃馨 20 朵', '粉色康乃馨，送给最美的妈妈', 219, 298, 100, 1893, '/assets/images/flowers/flower-08.svg', { recommended: 1, flower_language: '妈妈，您辛苦了', material: '主花材：粉色康乃馨 20 朵', rating: 5 }),
-  flower(3, '感恩的心·红色康乃馨礼盒', '经典红色，表达最深的敬意', 269, 358, 65, 754, '/assets/images/flowers/flower-09.svg', { flower_language: '健康长寿，平安喜乐', rating: 4.8 }),
-  flower(3, '萱草忘忧·康乃馨百合混搭', '祝妈妈无忧无虑，笑口常开', 359, 468, 40, 386, '/assets/images/flowers/flower-10.svg', { flower_language: '忘却一切烦忧', rating: 4.7 }),
+  flower(3, '母爱如歌·康乃馨 20 朵', '粉色康乃馨，送给最美的妈妈', 219, 298, 100, 1893, '/assets/images/flowers/carnation-pink.jpg', { recommended: 1, flower_language: '妈妈，您辛苦了', material: '主花材：粉色康乃馨 20 朵', rating: 5 }),
+  flower(3, '感恩的心·红色康乃馨礼盒', '经典红色，表达最深的敬意', 269, 358, 65, 754, '/assets/images/flowers/carnation-red.jpg', { flower_language: '健康长寿，平安喜乐', rating: 4.8 }),
+  flower(3, '萱草忘忧·康乃馨百合混搭', '祝妈妈无忧无虑，笑口常开', 359, 468, 40, 386, '/assets/images/flowers/daylily.jpg', { flower_language: '忘却一切烦忧', rating: 4.7 }),
 
-  flower(4, '清雅百合·白色香水百合', '亭亭玉立，清香满室', 289, 388, 50, 821, '/assets/images/flowers/flower-11.svg', { recommended: 1, flower_language: '百年好合，纯洁无瑕', rating: 4.9 }),
-  flower(4, '郁见你·七彩郁金香', '荷兰进口郁金香，春日限定', 239, 318, 35, 566, '/assets/images/flowers/flower-12.svg', { flower_language: '美丽的你，值得一切美好', rating: 4.6 }),
-  flower(4, '素心若雪·白玫瑰百合花束', '极简黑白灰，高级感十足', 319, 428, 28, 302, '/assets/images/flowers/flower-13.svg', { flower_language: '纯粹的爱，不染尘埃', rating: 4.5 }),
+  flower(4, '清雅百合·白色香水百合', '亭亭玉立，清香满室', 289, 388, 50, 821, '/assets/images/flowers/lily-white.jpg', { recommended: 1, flower_language: '百年好合，纯洁无瑕', rating: 4.9 }),
+  flower(4, '郁见你·七彩郁金香', '荷兰进口郁金香，春日限定', 239, 318, 35, 566, '/assets/images/flowers/tulip.jpg', { flower_language: '美丽的你，值得一切美好', rating: 4.6 }),
+  flower(4, '素心若雪·白玫瑰百合花束', '极简黑白灰，高级感十足', 319, 428, 28, 302, '/assets/images/flowers/rose-white.jpg', { flower_language: '纯粹的爱，不染尘埃', rating: 4.5 }),
 
-  flower(5, '永恒之心·永生花音乐盒', '可保存三年，伴音乐旋转', 599, 799, 25, 258, '/assets/images/flowers/flower-14.svg', { recommended: 1, flower_language: '时光不老，爱意永恒', packing: '高档礼盒 + 手提袋 + 定制贺卡', rating: 5 }),
-  flower(5, '星语心愿·永生花玻璃罩', 'ins 风摆件，送闺蜜首选', 429, 568, 30, 197, '/assets/images/flowers/flower-15.svg', { flower_language: '愿你心愿都能实现', rating: 4.7 }),
+  flower(5, '永恒之心·永生花音乐盒', '可保存三年，伴音乐旋转', 599, 799, 25, 258, '/assets/images/flowers/preserved.jpg', { recommended: 1, flower_language: '时光不老，爱意永恒', packing: '高档礼盒 + 手提袋 + 定制贺卡', rating: 5 }),
+  flower(5, '星语心愿·永生花玻璃罩', 'ins 风摆件，送闺蜜首选', 429, 568, 30, 197, '/assets/images/flowers/preserved.jpg', { flower_language: '愿你心愿都能实现', rating: 4.7 }),
 
-  flower(6, '开业大吉·三层落地花篮', '开业庆典标配，大气喜庆', 899, 1188, 20, 143, '/assets/images/flowers/flower-16.svg', { flower_language: '生意兴隆，财源广进', rating: 4.8 }),
-  flower(6, '前程似锦·商务祝贺花束', '乔迁升职祝贺，稳重得体', 469, 618, 32, 176, '/assets/images/flowers/flower-17.svg', { flower_language: '前程似锦，步步高升', rating: 4.6 }),
-  flower(6, '暖心慰问·探望病人花束', '淡雅不刺激，祝早日康复', 199, 268, 60, 305, '/assets/images/flowers/flower-18.svg', { flower_language: '早日康复，平安顺遂', rating: 4.7 }),
+  flower(6, '开业大吉·三层落地花篮', '开业庆典标配，大气喜庆', 899, 1188, 20, 143, '/assets/images/flowers/sunflower.jpg', { flower_language: '生意兴隆，财源广进', rating: 4.8 }),
+  flower(6, '前程似锦·商务祝贺花束', '乔迁升职祝贺，稳重得体', 469, 618, 32, 176, '/assets/images/flowers/tulip.jpg', { flower_language: '前程似锦，步步高升', rating: 4.6 }),
+  flower(6, '暖心慰问·探望病人花束', '淡雅不刺激，祝早日康复', 199, 268, 60, 305, '/assets/images/flowers/lily-white.jpg', { flower_language: '早日康复，平安顺遂', rating: 4.7 }),
 ];
 
 const USERS = [
