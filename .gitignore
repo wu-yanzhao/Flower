@@ -6,3 +6,7 @@ server/logs/*.log
 .DS_Store
 Thumbs.db
 *.tmp
+
+# 用户上传文件（运行时生成，不入库，仅保留目录占位 .gitkeep）
+server/static/uploads/*
+!server/static/uploads/.gitkeep

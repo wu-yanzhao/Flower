@@ -40,6 +40,8 @@ const config = {
   dbFile: process.env.DB_FILE || path.join(SERVER_ROOT, 'data', 'flower.db'),
   /** 前端静态资源目录（web） */
   webDir: process.env.WEB_DIR || path.join(PROJECT_ROOT, 'web'),
+  /** 后端统一静态资源目录（迁移的花材照片 + 用户上传），对外以 /static 前缀访问 */
+  staticDir: process.env.STATIC_DIR || path.join(SERVER_ROOT, 'static'),
   /** 日志文件 */
   logFile: path.join(SERVER_ROOT, 'logs', 'server.log'),
   /** 分页默认值 */

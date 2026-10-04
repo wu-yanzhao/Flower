@@ -7,30 +7,11 @@
   var state = { keyword: '', categoryId: '', status: '', page: 1, pageSize: 10 };
   var categories = [];
 
-  // 商品图片候选：image/ 目录下的真实花材照片（ASCII 文件名，经 scripts/gen_images.py 复制）
-  var FLOWER_IMAGES = [
-    '/assets/images/flowers/rose-red.avif',
-    '/assets/images/flowers/rose-champagne.avif',
-    '/assets/images/flowers/rose-pink.jpg',
-    '/assets/images/flowers/rose-blue.jpg',
-    '/assets/images/flowers/rose-white.jpg',
-    '/assets/images/flowers/sunflower.jpg',
-    '/assets/images/flowers/babybreath.jpg',
-    '/assets/images/flowers/carnation-pink.jpg',
-    '/assets/images/flowers/carnation-red.jpg',
-    '/assets/images/flowers/carnation-common.jpg',
-    '/assets/images/flowers/lily-white.jpg',
-    '/assets/images/flowers/tulip.jpg',
-    '/assets/images/flowers/preserved.jpg',
-    '/assets/images/flowers/eucalyptus.jpg',
-    '/assets/images/flowers/daylily.jpg'
-  ];
-
-  function imageOptions() {
-    return FLOWER_IMAGES.map(function (path) {
-      return '<img src="' + path + '" data-img="' + path + '" alt=""/>';
-    }).join('');
-  }
+  // 商品图片本地上传：扩展名白名单（大小写不敏感）与大小上限，
+  // 与后端 upload.controller.js 的 ALLOWED_EXT / MAX_SIZE 保持一致
+  var ALLOWED_EXT = ['jpg', 'jpeg', 'png', 'avif', 'raw'];
+  var MAX_IMG_SIZE = 10 * 1024 * 1024; // 10MB
+  var uploading = false;
 
   function loadCategories() {
     return window.API.get('/categories').then(function (list) {
@@ -118,16 +99,18 @@
       '<input class="form-control" id="fPacking" value="' + UI.escapeHtml(flower ? flower.packing : '') + '"/></div>' +
       '<div class="form-item full"><label class="form-label">商品描述</label>' +
       '<textarea class="form-control" id="fDesc">' + UI.escapeHtml(flower ? flower.description : '') + '</textarea></div>' +
-      '<div class="form-item full"><label class="form-label">商品图片（点击选择）</label>' +
-      '<input class="form-control" id="fImage" value="' + (flower ? flower.image : FLOWER_IMAGES[0]) + '"/>' +
-      '<div class="image-picker" id="fImagePicker">' + imageOptions() + '</div>' +
-      '<img class="preview-img" id="fPreview" src="' + (flower && flower.image ? flower.image : FLOWER_IMAGES[0]) + '"/></div>' +
+      '<div class="form-item full"><label class="form-label">商品图片（本地上传）</label>' +
+      '<input class="form-control" id="fFile" type="file" accept=".jpg,.jpeg,.png,.avif,.raw"/>' +
+      '<input class="form-control" id="fImage" readonly placeholder="选择文件后自动上传并填入图片地址" value="' + (flower && flower.image ? flower.image : '') + '"/>' +
+      '<div class="muted text-sm" id="fUploadStatus">支持 JPG / PNG / AVIF / RAW 格式，大小不超过 10MB</div>' +
+      '<img class="preview-img" id="fPreview" src="' + (flower && flower.image ? flower.image : '') + '"' +
+      (flower && flower.image ? '' : ' style="display:none"') + '/></div>' +
       '<div class="form-item full"><label class="text-sm"><input type="checkbox" id="fRecommend" ' +
       (flower && flower.recommended ? 'checked' : '') + '/> 首页推荐位展示</label></div>' +
       '<div class="form-error full" id="fError"></div>' +
       '</div>';
 
-    UI.modal(flower ? '编辑商品（#' + flower.id + '）' : '新增商品', form, {
+    var modalRef = UI.modal(flower ? '编辑商品（#' + flower.id + '）' : '新增商品', form, {
       size: 'modal-lg',
       okText: flower ? '保存修改' : '确认新增',
       onOk: function (close) {
@@ -154,6 +137,14 @@
           document.getElementById('fError').textContent = '售价必须大于 0';
           return;
         }
+        if (uploading) {
+          document.getElementById('fError').textContent = '图片正在上传，请稍候再提交';
+          return;
+        }
+        if (!payload.image) {
+          document.getElementById('fError').textContent = '请先选择并上传商品图片';
+          return;
+        }
         var req = flower ? window.API.put('/admin/flowers/' + flower.id, payload) : window.API.post('/admin/flowers', payload);
         req
           .then(function () {
@@ -167,11 +158,59 @@
       },
     });
 
-    document.getElementById('fImagePicker').addEventListener('click', function (e) {
-      var img = e.target.closest('[data-img]');
-      if (!img) return;
-      document.getElementById('fImage').value = img.getAttribute('data-img');
-      document.getElementById('fPreview').src = img.getAttribute('data-img');
+    // 本地文件上传：前端先做扩展名/大小筛选，非法类型直接报错、不发起请求；
+    // 合法文件以 base64 随 JSON 提交到 /admin/uploads，由后端做最终校验并落盘
+    document.getElementById('fFile').addEventListener('change', function () {
+      var input = this;
+      var file = input.files && input.files[0];
+      var errEl = document.getElementById('fError');
+      var statusEl = document.getElementById('fUploadStatus');
+      errEl.textContent = '';
+      if (!file) return;
+
+      var ext = (file.name.split('.').pop() || '').toLowerCase();
+      if (ALLOWED_EXT.indexOf(ext) === -1) {
+        errEl.textContent = '不支持的图片类型「' + ext + '」，仅允许 JPG、PNG、AVIF、RAW 格式';
+        input.value = '';
+        return;
+      }
+      if (file.size > MAX_IMG_SIZE) {
+        errEl.textContent = '图片过大（' + Math.round(file.size / 1024 / 1024) + 'MB），上限 10MB，请压缩后再上传';
+        input.value = '';
+        return;
+      }
+
+      uploading = true;
+      modalRef.box._okBtn.disabled = true;
+      statusEl.textContent = '上传中…';
+      var reader = new FileReader();
+      reader.onload = function () {
+        var base64 = String(reader.result).replace(/^data:[^;]+;base64,/, '');
+        window.API.post('/admin/uploads', { name: file.name, data: base64 })
+          .then(function (d) {
+            document.getElementById('fImage').value = d.url;
+            var preview = document.getElementById('fPreview');
+            preview.src = d.url;
+            preview.style.display = '';
+            statusEl.textContent = '上传成功';
+          })
+          .catch(function (err) {
+            errEl.textContent = err.message || '上传失败，请重试';
+            statusEl.textContent = '上传失败';
+          })
+          .then(function () {
+            uploading = false;
+            modalRef.box._okBtn.disabled = false;
+            input.value = '';
+          });
+      };
+      reader.onerror = function () {
+        uploading = false;
+        modalRef.box._okBtn.disabled = false;
+        statusEl.textContent = '读取文件失败，请重试';
+        input.value = '';
+      };
+      reader.readAsDataURL(file);
     });
   }
 

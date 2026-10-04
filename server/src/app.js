@@ -26,6 +26,9 @@ function createApp() {
     next();
   });
 
+  // 图片上传接口以 base64 随 JSON 提交，需在全局 1mb 限制之前单独放宽
+  // （body-parser 检测到请求体已被解析时会自动跳过，互不冲突）
+  app.use('/api/admin/uploads', express.json({ limit: '16mb' }));
   app.use(express.json({ limit: '1mb' }));
   app.use(express.urlencoded({ extended: true }));
   app.use(requestLogger);
@@ -34,6 +37,14 @@ function createApp() {
   // setHeaders 补充 AVIF 的 MIME（express 内置 mime 可能未登记，避免被识别为 octet-stream）
   app.use(express.static(config.webDir, {
     extensions: ['html'],
+    setHeaders: (res, filePath) => {
+      if (filePath.toLowerCase().endsWith('.avif')) res.setHeader('Content-Type', 'image/avif');
+    },
+  }));
+
+  // 后端统一静态资源目录：server/static（花材照片 + 用户上传），对外以 /static 访问
+  // setHeaders 补充 AVIF 的 MIME（express 内置 mime 可能未登记，避免被识别为 octet-stream）
+  app.use('/static', express.static(config.staticDir, {
     setHeaders: (res, filePath) => {
       if (filePath.toLowerCase().endsWith('.avif')) res.setHeader('Content-Type', 'image/avif');
     },

@@ -242,7 +242,7 @@ npm run open        # 启动并自动打开浏览器
 执行 `npm run reset`。服务运行中也能执行——脚本检测到数据库文件被占用时会自动改用「清空数据表」方式重建，数据立即生效，无需先停服务。
 
 **Q4：图片不显示？**
-商品图片为本地 SVG，位于 `web/assets/images/flowers/`，无需联网。
+商品图片为本地照片，位于后端统一静态目录 `server/static/flowers/`，对外以 `/static/flowers/...` 访问，无需联网。
 
 ---
 

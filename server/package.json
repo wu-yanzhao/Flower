@@ -14,6 +14,7 @@
     "seed": "node --no-warnings scripts/seed.js",
     "test:api": "node --no-warnings scripts/smoke-test.js",
     "test:admin": "node --no-warnings scripts/admin-test.js",
+    "test:upload": "node --no-warnings scripts/upload-test.js",
     "test": "node --no-warnings scripts/smoke-test.js && node --no-warnings scripts/reset.js && node --no-warnings scripts/admin-test.js"
   },
   "dependencies": {

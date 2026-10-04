@@ -34,8 +34,14 @@ function notFound(req, res, next) {
 
 // eslint-disable-next-line no-unused-vars
 function errorHandler(err, req, res, next) {
-  const status = err instanceof HttpError ? err.status : 500;
-  const message = err instanceof HttpError ? err.message : '服务器内部错误';
+  // body-parser 等框架中间件抛出的错误自带 status（如超限 413），
+  // 这里只尊重其状态码，但对外文案仍保持统一、不暴露内部细节
+  let status = err instanceof HttpError ? err.status : err.status || err.statusCode || 500;
+  let message = err instanceof HttpError ? err.message : '服务器内部错误';
+  if (err && (err.type === 'entity.too.large' || status === 413)) {
+    status = 413;
+    message = '请求内容过大（图片超限），请压缩后重试';
+  }
   if (status >= 500) {
     console.error('[ERROR]', req.method, req.originalUrl, err);
   }

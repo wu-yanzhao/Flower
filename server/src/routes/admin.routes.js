@@ -3,6 +3,7 @@
 const express = require('express');
 const statsController = require('../controllers/stats.controller');
 const flowerController = require('../controllers/flower.controller');
+const uploadController = require('../controllers/upload.controller');
 const orderController = require('../controllers/order.controller');
 const userController = require('../controllers/user.controller');
 const reviewController = require('../controllers/review.controller');
@@ -26,6 +27,8 @@ router.get('/logs', asyncHandler(statsController.logs));
 /* ------------------------- 商品管理 ------------------------- */
 router.get('/flowers', asyncHandler(flowerController.adminList));
 router.post('/flowers', asyncHandler(flowerController.create));
+// 商品图片上传（返回可写入 flowers.image 的静态 URL）
+router.post('/uploads', asyncHandler(uploadController.save));
 router.put('/flowers/:id', asyncHandler(flowerController.update));
 router.put('/flowers/:id/status', asyncHandler(flowerController.setStatus));
 router.put('/flowers/:id/stock', asyncHandler(flowerController.adjustStock));

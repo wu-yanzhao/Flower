@@ -7,10 +7,13 @@
 SVG 绘制逻辑（path / 渐变 / 装饰光点 / 动画样式）已整体移除，本脚本
 不再生成任何 SVG 文件。
 
-本脚本的作用：把 image/ 下的实拍照片复制到前端静态资源目录
-web/assets/images/flowers/，并以 ASCII 安全文件名命名，供现有静态资源
-服务（express.static(webDir)，见 server/src/app.js）按
-`/assets/images/flowers/<name>` 直接加载。
+本脚本的作用：把根目录 image/ 下的实拍照片复制到后端统一静态资源目录
+server/static/flowers/，并以 ASCII 安全文件名命名，供后端 /static 静态路由
+（见 server/src/app.js 的 app.use('/static', ...)）按
+`/static/flowers/<name>` 直接加载。
+
+注意：image/ 为可选的设计源目录；若已删除，运行本脚本会提示缺失并跳过，
+实际花材照片已随仓库提交在 server/static/flowers/。
 
 运行：python scripts/gen_images.py
 """
@@ -19,7 +22,7 @@ import shutil
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'image')
-DST = os.path.join(ROOT, 'web', 'assets', 'images', 'flowers')
+DST = os.path.join(ROOT, 'server', 'static', 'flowers')
 os.makedirs(DST, exist_ok=True)
 
 # (源文件名, 目标文件名) —— 目标文件名使用 ASCII，避免 URL/中文编码问题

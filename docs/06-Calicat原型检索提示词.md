@@ -114,7 +114,7 @@ flower shop product list filter sort mobile ui kit
 玫瑰 康乃馨 向日葵 花艺 摄影
 ```
 
-- 对应：`web/assets/images/flowers/flower-01~18.svg` 与 `ui/hero.svg`（若不满意本地 SVG 可在此替换）
+- 对应：`server/static/flowers/`（花材照片，URL 前缀 /static/flowers/）；UI 图见 `web/assets/images/ui/`（若不满意可在此替换）
 
 ---
 
