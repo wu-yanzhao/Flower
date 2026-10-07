@@ -4,6 +4,25 @@ const jwt = require('../utils/jwt');
 const { HttpError } = require('../utils/http-error');
 const { logOperation } = require('../db');
 
+/**
+ * 已吊销 token 的 jti 集合（进程内存级）。
+ * 说明：本项目为无状态 JWT，登出无法让服务端立刻失效 token，
+ * 因此采用 jti 黑名单方案——登出时把该 token 的 jti 加入集合，
+ * resolveUser 校验时命中即视为失效。重启服务后黑名单清空（已过期 token 仍会按 exp 自然失效）。
+ */
+const revokedJtis = new Set();
+
+/** 吊销一个 token（重复登出/已失效的 token 直接忽略） */
+function revokeToken(token) {
+  if (!token) return;
+  try {
+    const payload = jwt.verify(token);
+    if (payload && payload.jti) revokedJtis.add(payload.jti);
+  } catch (err) {
+    /* 已失效的 token 无需处理 */
+  }
+}
+
 /** 从请求头解析 token：Authorization: Bearer xxx */
 function extractToken(req) {
   const header = req.headers.authorization || '';
@@ -23,6 +42,7 @@ function resolveUser(req) {
     throw new HttpError(401, err.message || '登录状态失效，请重新登录');
   }
   const db = req.app.locals.db;
+  if (payload.jti && revokedJtis.has(payload.jti)) throw new HttpError(401, '登录已失效，请重新登录');
   const user = db.get('SELECT * FROM users WHERE id = ?', [payload.userId]);
   if (!user) throw new HttpError(401, '用户不存在或已被删除');
   if (user.status !== 'active') throw new HttpError(403, '账号已被禁用，请联系管理员');
@@ -75,4 +95,4 @@ function auditLog(moduleName, action) {
   };
 }
 
-module.exports = { authRequired, authOptional, adminOnly, auditLog, extractToken };
+module.exports = { authRequired, authOptional, adminOnly, auditLog, extractToken, revokeToken };

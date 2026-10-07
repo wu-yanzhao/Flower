@@ -21,9 +21,6 @@ exports.create = (req, res) => {
   if (!order) throw new HttpError(404, '订单不存在');
   if (order.status !== 'completed') throw new HttpError(400, '订单完成后才能评价');
 
-  const exist = db.get('SELECT COUNT(*) AS c FROM reviews WHERE order_id = ?', [order.id]).c;
-  if (exist) throw new HttpError(400, '该订单已评价，感谢您的反馈');
-
   const orderItems = db.all('SELECT * FROM order_items WHERE order_id = ?', [order.id]);
   let count = 0;
 
@@ -34,6 +31,9 @@ exports.create = (req, res) => {
       const content = String(raw.content || '').slice(0, 500);
       const matched = orderItems.find((it) => it.flower_id === flowerId);
       if (!matched) return; // 忽略非本订单的商品
+      // 按 (订单, 商品) 维度判重，支持同一订单内的多个商品分别评价（UNIQUE(order_id, flower_id)）
+      const dup = db.get('SELECT 1 FROM reviews WHERE order_id = ? AND flower_id = ?', [order.id, flowerId]);
+      if (dup) throw new HttpError(400, `「${matched.flower_name}」已评价，请勿重复提交`);
       db.run(
         "INSERT INTO reviews (order_id, user_id, flower_id, rating, content, status, created_at) VALUES (?,?,?,?,?, 'visible', ?)",
         [order.id, req.user.id, flowerId, rating, content, now()]
@@ -100,12 +100,23 @@ exports.adminList = (req, res) => {
   return page(res, list, total, pageNum, pageSize);
 };
 
+/** 重新计算某商品的综合评分（仅统计可见评价），保持 flowers.rating 与实时数据一致 */
+function recomputeRating(db, flowerId) {
+  const stat = db.get(
+    "SELECT COALESCE(AVG(rating),5) AS avg FROM reviews WHERE flower_id = ? AND status = 'visible'",
+    [flowerId]
+  );
+  db.run('UPDATE flowers SET rating = ? WHERE id = ?', [Math.round(stat.avg * 10) / 10, flowerId]);
+}
+
 /** 隐藏 / 显示评价 */
 exports.setStatus = (req, res) => {
   const db = req.app.locals.db;
   const id = Number(req.params.id);
   const status = req.body.status === 'hidden' ? 'hidden' : 'visible';
+  const target = db.get('SELECT flower_id FROM reviews WHERE id = ?', [id]);
   db.run('UPDATE reviews SET status = ? WHERE id = ?', [status, id]);
+  if (target) recomputeRating(db, target.flower_id); // 隐藏/恢复可见后需重算评分
   logOperation(db, req.user, '评价', status === 'hidden' ? '隐藏评价' : '显示评价', `评价 #${id}`);
   return ok(res, null, status === 'hidden' ? '评价已隐藏' : '评价已显示');
 };
@@ -122,7 +133,10 @@ exports.reply = (req, res) => {
 
 exports.remove = (req, res) => {
   const db = req.app.locals.db;
-  db.run('DELETE FROM reviews WHERE id = ?', [Number(req.params.id)]);
-  logOperation(db, req.user, '评价', '删除评价', `删除评价 #${req.params.id}`);
+  const id = Number(req.params.id);
+  const target = db.get('SELECT flower_id FROM reviews WHERE id = ?', [id]);
+  db.run('DELETE FROM reviews WHERE id = ?', [id]);
+  if (target) recomputeRating(db, target.flower_id); // 删除后重算评分
+  logOperation(db, req.user, '评价', '删除评价', `删除评价 #${id}`);
   return ok(res, null, '评价已删除');
 };

@@ -71,12 +71,11 @@ function start() {
   }
 
   const app = createApp();
-  app.listen(config.port, () => {
+  const server = app.listen(config.port, () => {
     const line = '═'.repeat(58);
     console.log(line);
     console.log('  🌸  鲜花订购与管理系统 · 后端服务已启动');
     console.log('  ----------------------------------------------------------');
-    console.log(`  ➤  接口地址： http://localhost:${config.port}/api`);
     console.log(`  ➤  顾客端：   http://localhost:${config.port}/`);
     console.log(`  ➤  管理端：   http://localhost:${config.port}/admin/index.html`);
     console.log(`  ➤  数据库：   ${config.dbFile}`);
@@ -84,6 +83,19 @@ function start() {
     console.log('  ----------------------------------------------------------');
     console.log('  演示账号：管理员 admin / admin123    顾客 customer / 123456');
     console.log(line);
+  });
+
+  // 端口被占用时给出明确指引，避免新手看到一堆堆栈不知所措
+  server.on('error', (err) => {
+    if (err && err.code === 'EADDRINUSE') {
+      console.error(
+        `\n❌ 端口 ${config.port} 已被占用，无法启动后端服务。\n` +
+          `   请先结束占用该端口的进程（如在 IDEA / 终端中重复启动了服务），\n` +
+          `   或修改 server/.env 中的 PORT 换成其他端口（例如 8080）后重试。\n`
+      );
+      process.exit(1);
+    }
+    throw err;
   });
 }
 

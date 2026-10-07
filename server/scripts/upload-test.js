@@ -13,8 +13,8 @@ const fs = require('fs');
 const path = require('path');
 
 const BASE = process.env.API_BASE || 'http://localhost:3000/api';
-/** 上传文件落盘目录（与 upload.controller.js 的 UPLOAD_DIR 保持一致） */
-const UPLOAD_DIR = path.resolve(__dirname, '..', '..', 'web', 'assets', 'images', 'uploads');
+/** 上传文件落盘目录（与 upload.controller.js 实际写入的 config.staticDir/uploads 保持一致） */
+const UPLOAD_DIR = path.resolve(__dirname, '..', 'static', 'uploads');
 
 let passed = 0;
 let failed = 0;

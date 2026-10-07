@@ -110,7 +110,7 @@ exports.create = (req, res) => {
     }))
   );
 
-  const orderNo = generateOrderNo();
+  const orderNo = generateOrderNo(db);
   let orderId = 0;
 
   db.transaction(() => {
@@ -322,7 +322,11 @@ exports.adminSetStatus = (req, res) => {
       db.run("UPDATE orders SET status='canceled', canceled_at=? WHERE id = ?", [now(), order.id]);
       const items = db.all('SELECT * FROM order_items WHERE order_id = ?', [order.id]);
       items.forEach((it) => {
-        db.run('UPDATE flowers SET stock = stock + ?, updated_at = ? WHERE id = ?', [it.quantity, now(), it.flower_id]);
+        // 与用户端取消保持一致：回滚库存的同时回退销量，并把销量钳制为非负
+        db.run('UPDATE flowers SET stock = stock + ?, sales = sales - ?, updated_at = ? WHERE id = ?', [
+          it.quantity, it.quantity, now(), it.flower_id,
+        ]);
+        db.run('UPDATE flowers SET sales = CASE WHEN sales < 0 THEN 0 ELSE sales END WHERE id = ?', [it.flower_id]);
       });
     });
     logOperation(db, req.user, '订单', '取消', `管理员取消订单 ${order.order_no}`);

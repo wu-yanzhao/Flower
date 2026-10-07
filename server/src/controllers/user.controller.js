@@ -56,7 +56,7 @@ exports.create = (req, res) => {
   const hash = hashPassword(data.password);
   const info = db.run(
     'INSERT INTO users (username, password_hash, salt, nickname, phone, email, role, status, created_at) VALUES (?,?,?,?,?,?,?,?,?)',
-    [data.username, hash, hash.split('$')[4], data.nickname, data.phone || '', data.email || '', data.role, 'active', now()]
+    [data.username, hash, hash.split('$')[5], data.nickname, data.phone || '', data.email || '', data.role, 'active', now()]
   );
   logOperation(db, req.user, '用户', '新增用户', `新增用户 ${data.username}`);
   return ok(res, { id: info.lastInsertRowid }, '用户新增成功');
@@ -81,7 +81,7 @@ exports.resetPassword = (req, res) => {
   const data = validate(req.body || {}, { password: { default: '123456', min: [6, '密码至少 6 位'] } });
   const hash = hashPassword(data.password);
   db.run('UPDATE users SET password_hash = ?, salt = ?, updated_at = ? WHERE id = ?', [
-    hash, hash.split('$')[4], now(), id,
+    hash, hash.split('$')[5], now(), id,
   ]);
   logOperation(db, req.user, '用户', '重置密码', `重置用户 #${id} 的密码`);
   return ok(res, { password: data.password }, '密码已重置');

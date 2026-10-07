@@ -19,6 +19,24 @@
     location.href = redirect ? redirect : 'index.html';
   }
 
+  /**
+   * 登录后根据「角色」决定跳转目标（角色优先于 redirect 参数）：
+   * - 管理员：默认进入后台；仅当 redirect 本身指向后台页时才沿用
+   *   （如被守卫拦截后回填的 ?redirect=admin/index.html），避免携带
+   *   顾客页 redirect（?redirect=index.html）时被错误带回前台。
+   * - 普通用户：沿用非后台来源页，否则进入商城首页。
+   * 同时校验 redirect 必须为同源相对路径，杜绝 open-redirect。
+   */
+  function resolveTarget(user) {
+    var redirect = UI.qs('redirect') || '';
+    var safe = !/^(?:[a-z]+:|\/\/)/i.test(redirect); // 拒绝 javascript: / http:// / //
+    var isAdminTarget = /(^|\/)admin\//.test(redirect);
+    if (user && user.role === 'admin') {
+      return safe && isAdminTarget ? redirect : 'admin/index.html';
+    }
+    return safe && !isAdminTarget && redirect ? redirect : 'index.html';
+  }
+
   /* ---------------- 登录 ---------------- */
   function initLogin() {
     var form = document.getElementById('loginForm');
@@ -54,16 +72,14 @@
       btn.textContent = '登录中…';
       window.API.post('/auth/login', { username: username, password: password })
         .then(function (data) {
+          // 先清除上一角色的认证状态，再写入本次登录态，避免残留令牌/用户信息串号
+          window.Auth.clear();
           window.Auth.setToken(data.token);
           window.Auth.setUser(data.user);
           UI.toast('登录成功，欢迎回来！', 'success');
+          var target = resolveTarget(data.user);
           setTimeout(function () {
-            if (data.user.role === 'admin' && !UI.qs('redirect')) {
-              // 管理员默认进入后台，也可自行返回商城
-              location.href = 'admin/index.html';
-            } else {
-              redirectBack();
-            }
+            location.href = target;
           }, 500);
         })
         .catch(function (err) {

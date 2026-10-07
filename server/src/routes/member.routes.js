@@ -23,6 +23,6 @@ router.delete('/favorites/:id', authRequired, asyncHandler(favoriteController.re
 
 /* ------------------------- 订单评价 ------------------------- */
 router.post('/reviews', authRequired, asyncHandler(reviewController.create));
-router.get('/reviews/mine', authRequired, asyncHandler(reviewController.mine));
+router.get('/reviews/mine', authRequired, asyncHandler(reviewController.myList));
 
 module.exports = router;

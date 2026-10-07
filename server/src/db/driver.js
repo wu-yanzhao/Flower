@@ -44,17 +44,41 @@ function createConnection(file) {
 }
 
 /**
- * 统一的事务包装：SQLite 不支持嵌套事务，这里用计数器做简单保护。
+ * 统一的事务包装。
+ * - 顶层事务使用 BEGIN/COMMIT/ROLLBACK；
+ * - 嵌套事务（同一连接上 transaction 内再调用 transaction）通过 SAVEPOINT 模拟，
+ *   保证外层提交/回滚时整体一致，避免 “cannot start a transaction within a transaction” 错误。
  */
 function makeTransaction(db) {
+  let depth = 0;
   return function transaction(fn) {
-    db.exec('BEGIN');
+    if (depth === 0) {
+      depth = 1;
+      db.exec('BEGIN');
+      try {
+        const result = fn();
+        db.exec('COMMIT');
+        depth = 0;
+        return result;
+      } catch (err) {
+        db.exec('ROLLBACK');
+        depth = 0;
+        throw err;
+      }
+    }
+    // 嵌套：以 SAVEPOINT 隔离，失败仅回滚到该保存点
+    const sp = `sp_${depth}`;
+    depth += 1;
+    db.exec(`SAVEPOINT ${sp}`);
     try {
       const result = fn();
-      db.exec('COMMIT');
+      db.exec(`RELEASE SAVEPOINT ${sp}`);
+      depth -= 1;
       return result;
     } catch (err) {
-      db.exec('ROLLBACK');
+      db.exec(`ROLLBACK TO SAVEPOINT ${sp}`);
+      db.exec(`RELEASE SAVEPOINT ${sp}`);
+      depth -= 1;
       throw err;
     }
   };

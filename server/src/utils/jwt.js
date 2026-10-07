@@ -21,7 +21,11 @@ function base64urlDecode(str) {
 function sign(payload, expiresIn = config.jwtExpiresIn) {
   const header = { alg: 'HS256', typ: 'JWT' };
   const now = Math.floor(Date.now() / 1000);
-  const body = Object.assign({}, payload, { iat: now, exp: now + Number(expiresIn) });
+  const body = Object.assign({}, payload, {
+    jti: crypto.randomBytes(8).toString('hex'), // 唯一标识，用于登出吊销
+    iat: now,
+    exp: now + Number(expiresIn),
+  });
   const encodedHeader = base64url(JSON.stringify(header));
   const encodedPayload = base64url(JSON.stringify(body));
   const signature = crypto
@@ -42,6 +46,16 @@ function verify(token) {
   const parts = token.split('.');
   if (parts.length !== 3) throw new Error('访问令牌格式非法');
   const [h, p, s] = parts;
+  // 校验头部声明的算法，杜绝 alg=none 等降级攻击
+  let header;
+  try {
+    header = JSON.parse(base64urlDecode(h).toString('utf8'));
+  } catch (err) {
+    throw new Error('访问令牌头部非法');
+  }
+  if (!header || header.alg !== 'HS256' || header.typ !== 'JWT') {
+    throw new Error('访问令牌算法不受支持');
+  }
   const expected = crypto
     .createHmac('sha256', config.jwtSecret)
     .update(`${h}.${p}`)
@@ -49,7 +63,12 @@ function verify(token) {
     .replace(/\+/g, '-')
     .replace(/\//g, '_')
     .replace(/=+$/, '');
-  if (expected !== s) throw new Error('访问令牌签名校验失败');
+  // 使用恒定时间比较，避免计时侧信道泄露签名信息
+  const a = Buffer.from(expected);
+  const b = Buffer.from(s);
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+    throw new Error('访问令牌签名校验失败');
+  }
   const payload = JSON.parse(base64urlDecode(p).toString('utf8'));
   if (payload.exp && payload.exp < Math.floor(Date.now() / 1000)) {
     throw new Error('访问令牌已过期，请重新登录');

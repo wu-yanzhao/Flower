@@ -2,6 +2,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 
 /**
  * 极简 .env 加载器：读取 server/.env（可选），避免为此引入 dotenv 依赖
@@ -32,8 +33,17 @@ const config = {
   port: Number(process.env.PORT || 3000),
   /** 运行环境 */
   env: process.env.NODE_ENV || 'development',
-  /** JWT 签名密钥（生产环境请通过环境变量覆盖） */
-  jwtSecret: process.env.JWT_SECRET || 'flower-shop-graduation-project-secret',
+  /** JWT 签名密钥（生产环境请通过 .env 的 JWT_SECRET 指定固定强随机值） */
+  jwtSecret: process.env.JWT_SECRET || (() => {
+    // 未显式配置时，每次启动随机生成，避免仓库内置弱密钥被利用伪造 token。
+    // 代价：重启服务后旧 token 全部失效，需重新登录（符合无状态会话的预期）。
+    const random = crypto.randomBytes(32).toString('hex');
+    console.warn(
+      '\x1b[33m[安全提示]\x1b[0m 未配置环境变量 JWT_SECRET，已使用本次启动随机生成的密钥；' +
+      '重启服务后旧 token 将失效，正式部署请在 .env 中设置固定的强随机密钥。'
+    );
+    return random;
+  })(),
   /** token 有效期（秒），默认 7 天 */
   jwtExpiresIn: Number(process.env.JWT_EXPIRES_IN || 60 * 60 * 24 * 7),
   /** SQLite 数据文件 */

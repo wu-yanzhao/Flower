@@ -6,6 +6,7 @@ const { hashPassword, verifyPassword } = require('../utils/password');
 const jwt = require('../utils/jwt');
 const { ok } = require('../utils/response');
 const { safeUser, now } = require('../utils/helpers');
+const { revokeToken, extractToken } = require('../middleware/auth');
 
 /**
  * 用户注册
@@ -31,7 +32,7 @@ exports.register = (req, res) => {
   const info = db.run(
     `INSERT INTO users (username, password_hash, salt, nickname, phone, email, role, status, created_at)
      VALUES (?,?,?,?,?,?, 'customer', 'active', ?)`,
-    [data.username, hash, hash.split('$')[4], data.nickname, data.phone || '', data.email || '', now()]
+    [data.username, hash, hash.split('$')[5], data.nickname, data.phone || '', data.email || '', now()]
   );
 
   const user = db.get('SELECT * FROM users WHERE id = ?', [info.lastInsertRowid]);
@@ -48,7 +49,8 @@ exports.login = (req, res) => {
   });
 
   const user = db.get('SELECT * FROM users WHERE username = ?', [data.username]);
-  if (!user) throw new HttpError(401, '账号不存在，请注册后再登录');
+  // 统一文案，避免通过“账号不存在”与“密码错误”的差异枚举出有效用户名
+  if (!user) throw new HttpError(401, '账号或密码错误');
   if (!verifyPassword(data.password, user.password_hash)) throw new HttpError(401, '账号或密码错误');
   if (user.status !== 'active') throw new HttpError(403, '账号已被禁用，请联系管理员');
 
@@ -97,12 +99,15 @@ exports.changePassword = (req, res) => {
   const hash = hashPassword(data.newPassword);
   db.run('UPDATE users SET password_hash = ?, salt = ?, updated_at = ? WHERE id = ?', [
     hash,
-    hash.split('$')[4],
+    hash.split('$')[5],
     now(),
     req.user.id,
   ]);
   return ok(res, null, '密码修改成功');
 };
 
-/** 退出登录：前端清除 token 即可，这里做一次签名失效记录（预留扩展） */
-exports.logout = (req, res) => ok(res, null, '已退出登录');
+/** 退出登录：吊销当前 token（服务端黑名单），前端同时清除本地 token */
+exports.logout = (req, res) => {
+  revokeToken(req.token || extractToken(req));
+  return ok(res, null, '已退出登录');
+};
