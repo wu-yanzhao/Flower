@@ -27,5 +27,8 @@
     "Express",
     "SQLite"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {},
+  "author": "",
+  "type": "commonjs"
 }
