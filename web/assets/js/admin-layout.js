@@ -88,10 +88,15 @@
       svg(I.chevronRight) +
       '<b>' + UI.escapeHtml(title) + '</b>' +
       '</div>' +
-      '<div class="admin-search">' + svg(I.search) +
-      '<input type="text" placeholder="搜索订单号 / 商品 / 用户" /></div>' +
-      '<button class="admin-icon-btn" type="button" title="通知">' + svg(I.bell) +
-      '<span class="dot"></span></button>' +
+      '<div class="admin-search" id="globalSearch">' + svg(I.search) +
+      '<input type="text" id="globalSearchInput" placeholder="搜索订单号 / 商品 / 用户" autocomplete="off" />' +
+      '<div class="admin-search-panel" id="globalSearchPanel"></div>' +
+      '</div>' +
+      '<div class="admin-bell" id="adminBell">' +
+      '<button class="admin-icon-btn" id="adminBellBtn" type="button" title="通知">' + svg(I.bell) +
+      '<span class="dot" id="adminBellDot"></span></button>' +
+      '<div class="admin-bell-panel" id="adminBellPanel"></div>' +
+      '</div>' +
       '<div class="admin-user">' +
       '<button class="admin-user-btn" id="adminUserBtn" type="button">' +
       '<span class="avatar">' + UI.escapeHtml((user.nickname || 'A').slice(0, 1)) + '</span>' +
@@ -120,6 +125,166 @@
         location.href = '../login.html';
       }, 400);
     });
+
+    bindGlobalSearch();
+    bindNotice();
+  }
+
+  /* ---------- 顶栏：全局搜索 ---------- */
+  function bindGlobalSearch() {
+    var wrap = document.getElementById('globalSearch');
+    var input = document.getElementById('globalSearchInput');
+    var panel = document.getElementById('globalSearchPanel');
+    if (!wrap || !input || !panel) return;
+
+    function open() { panel.classList.add('open'); }
+    function close() { panel.classList.remove('open'); }
+
+    var run = UI.debounce(function () {
+      var q = input.value.trim();
+      if (!q) { panel.innerHTML = ''; close(); return; }
+      panel.innerHTML = '<div class="sp-hint">查询中…</div>';
+      open();
+      Promise.all([
+        global.API.get('/admin/orders', { keyword: q, page: 1, pageSize: 5 }).catch(function () { return null; }),
+        global.API.get('/admin/flowers', { keyword: q, page: 1, pageSize: 5 }).catch(function () { return null; }),
+        global.API.get('/admin/users', { keyword: q, page: 1, pageSize: 5 }).catch(function () { return null; }),
+      ]).then(function (res) {
+        if (input.value.trim() !== q) return; // 结果已过期，丢弃
+        var orders = (res[0] && res[0].list) || [];
+        var flowers = (res[1] && res[1].list) || [];
+        var users = (res[2] && res[2].list) || [];
+        panel.innerHTML = renderSearchResult(q, orders, flowers, users);
+        open();
+      });
+    }, 260);
+
+    input.addEventListener('input', run);
+    input.addEventListener('focus', function () { if (input.value.trim()) run(); });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var q = input.value.trim();
+        if (!q) return;
+        var target = panel.querySelector('[data-href]');
+        location.href = target ? target.getAttribute('data-href')
+          : 'orders.html?keyword=' + encodeURIComponent(q);
+      } else if (e.key === 'Escape') {
+        close();
+        input.blur();
+      }
+    });
+    panel.addEventListener('click', function (e) {
+      var item = e.target.closest('[data-href]');
+      if (item) location.href = item.getAttribute('data-href');
+    });
+    document.addEventListener('click', function (e) {
+      if (!wrap.contains(e.target)) close();
+    });
+  }
+
+  function renderSearchResult(q, orders, flowers, users) {
+    var esc = UI.escapeHtml;
+    function group(title, href, rows) {
+      if (!rows.length) return '';
+      return (
+        '<div class="sp-group"><div class="sp-head"><span>' + title + '</span>' +
+        '<a href="' + href + '">查看全部</a></div>' + rows + '</div>'
+      );
+    }
+    var orderRows = orders.map(function (o) {
+      return (
+        '<a class="sp-item" data-href="orders.html?keyword=' + encodeURIComponent(o.order_no || '') + '">' +
+        '<span class="sp-title">' + esc(o.order_no || '#' + o.id) + '</span>' +
+        '<span class="sp-meta">' + esc(o.nickname || o.username || '') + ' · ' + UI.price(o.pay_amount) +
+        ' · ' + UI.statusText(o.status) + '</span></a>'
+      );
+    }).join('');
+    var flowerRows = flowers.map(function (f) {
+      return (
+        '<a class="sp-item" data-href="flowers.html?keyword=' + encodeURIComponent(f.name || '') + '">' +
+        '<span class="sp-title">' + esc(f.name) + '</span>' +
+        '<span class="sp-meta">' + UI.price(f.price) + ' · 库存 ' + (f.stock || 0) +
+        ' · ' + (f.status === 'on' ? '在售' : '已下架') + '</span></a>'
+      );
+    }).join('');
+    var userRows = users.map(function (u) {
+      return (
+        '<a class="sp-item" data-href="users.html?keyword=' + encodeURIComponent(u.username || '') + '">' +
+        '<span class="sp-title">' + esc(u.nickname || u.username) + '</span>' +
+        '<span class="sp-meta">' + esc(u.username) + ' · ' + (u.role === 'admin' ? '管理员' : '顾客') +
+        ' · ' + (u.status === 'active' ? '正常' : '已禁用') + '</span></a>'
+      );
+    }).join('');
+    var html =
+      group('订单', 'orders.html?keyword=' + encodeURIComponent(q), orderRows) +
+      group('商品', 'flowers.html?keyword=' + encodeURIComponent(q), flowerRows) +
+      group('用户', 'users.html?keyword=' + encodeURIComponent(q), userRows);
+    return html || '<div class="sp-hint">未找到与“' + esc(q) + '”相关的结果</div>';
+  }
+
+  /* ---------- 顶栏：通知 ---------- */
+  function bindNotice() {
+    var box = document.getElementById('adminBell');
+    var btn = document.getElementById('adminBellBtn');
+    var panel = document.getElementById('adminBellPanel');
+    var dot = document.getElementById('adminBellDot');
+    if (!box || !btn || !panel) return;
+    var loaded = false;
+
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var willOpen = !panel.classList.contains('open');
+      var sp = document.getElementById('globalSearchPanel');
+      if (sp) sp.classList.remove('open');
+      if (!willOpen) { panel.classList.remove('open'); return; }
+      panel.classList.add('open');
+      if (dot) dot.style.display = 'none';
+      if (loaded) return;
+      panel.innerHTML = '<div class="sp-hint">加载中…</div>';
+      global.API.get('/admin/stats/overview')
+        .then(function (d) { loaded = true; panel.innerHTML = renderNotice(d || {}); })
+        .catch(function (err) {
+          panel.innerHTML = '<div class="sp-hint">通知加载失败：' + UI.escapeHtml(err.message || '未知错误') + '</div>';
+        });
+    });
+
+    panel.addEventListener('click', function (e) {
+      var item = e.target.closest('[data-href]');
+      if (item) location.href = item.getAttribute('data-href');
+    });
+    document.addEventListener('click', function (e) {
+      if (!box.contains(e.target)) panel.classList.remove('open');
+    });
+  }
+
+  function renderNotice(d) {
+    function row(href, tone, title, desc) {
+      return (
+        '<a class="bn-item" data-href="' + href + '">' +
+        '<span class="bn-dot ' + tone + '"></span>' +
+        '<span class="bn-body"><b>' + title + '</b><small>' + desc + '</small></span>' +
+        '</a>'
+      );
+    }
+    var html = '';
+    if (d.pendingCount) html += row('orders.html', 'warn', '待发货订单', d.pendingCount + ' 笔订单等待发货处理');
+    if (d.shippedCount) html += row('orders.html', 'info', '待收货订单', d.shippedCount + ' 笔订单已发货，等待顾客收货');
+    if (d.lowStock) html += row('flowers.html', 'danger', '库存预警', d.lowStock + ' 款在售商品库存不足 10 件');
+    if (d.reviewCount) html += row('reviews.html', 'ok', '顾客评价', d.reviewCount + ' 条评价待查看与回复');
+    return html || '<div class="sp-hint">暂无新的通知</div>';
+  }
+
+  /* ---------- 深链：携带 keyword 进入管理页后自动执行查询 ---------- */
+  function applyDeepLink() {
+    var kw = UI.qs('keyword');
+    if (!kw) return;
+    var input = document.getElementById('kw');
+    var search = document.getElementById('searchBtn');
+    if (input && search) {
+      input.value = kw;
+      search.click();
+    }
   }
 
   function renderFoot() {
@@ -151,6 +316,9 @@
     renderTop();
     renderFoot();
     bindCollapse();
+    // 等页面自身脚本绑定完查询按钮后再执行深链查询，避免点击落空
+    if (document.readyState === 'complete') setTimeout(applyDeepLink, 0);
+    else window.addEventListener('load', function () { setTimeout(applyDeepLink, 0); });
   }
 
   /** 管理员守卫：未登录或角色非管理员则拦截 */
