@@ -23,6 +23,7 @@ router.get('/stats/category', asyncHandler(statsController.category));
 router.get('/stats/status', asyncHandler(statsController.status));
 router.get('/stats/recent', asyncHandler(statsController.recent));
 router.get('/logs', asyncHandler(statsController.logs));
+router.get('/logs/export', asyncHandler(statsController.logsExport));
 
 /* ------------------------- 商品管理 ------------------------- */
 router.get('/flowers', asyncHandler(flowerController.adminList));

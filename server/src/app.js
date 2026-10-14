@@ -6,6 +6,7 @@ const config = require('./config');
 const { initDatabase } = require('./db');
 const routes = require('./routes');
 const { requestLogger, notFound, errorHandler } = require('./middleware/error');
+const { securityHeaders, createRateLimit } = require('./middleware/security');
 
 /**
  * 应用入口：初始化数据库 -> 注册中间件 -> 挂载路由 -> 启动服务
@@ -17,9 +18,20 @@ function createApp() {
   app.locals.db = db;
   app.locals.driver = driver;
 
-  // 跨域：本地开发 / 演示时前端可直接用 file:// 或 localhost 访问
+  // 基础安全响应头
+  app.use(securityHeaders);
+
+  // 跨域：默认放行任意来源（本地 / 演示 / file:// 均不受影响）；
+  // 在 .env 设置 CORS_ORIGINS（逗号分隔）后即按白名单收紧。
+  const corsOrigins = config.corsOrigins;
   app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    const origin = req.headers.origin;
+    if (corsOrigins.includes('*')) {
+      res.header('Access-Control-Allow-Origin', '*');
+    } else if (origin && corsOrigins.includes(origin)) {
+      res.header('Access-Control-Allow-Origin', origin);
+      res.header('Vary', 'Origin');
+    }
     res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
     if (req.method === 'OPTIONS') return res.sendStatus(204);
@@ -50,6 +62,9 @@ function createApp() {
     },
   }));
 
+  // 登录接口限流：同一 IP 每分钟累计 10 次「失败」尝试后拒绝，缓解暴力破解
+  app.use('/api/auth/login', createRateLimit({ windowMs: 60 * 1000, max: 10 }));
+
   // REST
   app.use('/api', routes);
 
@@ -63,10 +78,10 @@ function createApp() {
 }
 
 function start() {
-  // 版本检查：node:sqlite 需要 >= 22.5，低版本可安装 better-sqlite3 兜底
-  const major = Number(process.versions.node.split('.')[0]);
-  if (major < 18) {
-    console.error('当前 Node.js 版本过低（%s），请安装 Node.js 18 及以上版本', process.versions.node);
+  // 版本检查：node:sqlite 需要 Node.js >= 22.5
+  const [major, minor] = process.versions.node.split('.').map(Number);
+  if (major < 22 || (major === 22 && minor < 5)) {
+    console.error('当前 Node.js 版本过低（%s），请安装 Node.js 22.5 及以上版本', process.versions.node);
     process.exit(1);
   }
 

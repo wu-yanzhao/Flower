@@ -3,9 +3,9 @@
 /**
  * 数据库驱动适配层
  * ------------------------------------------------------------
- * 优先使用 Node.js 内置模块 node:sqlite（Node >= 22.5，零安装、免编译）；
- * 若运行环境版本较低，则自动回退到社区库 better-sqlite3（需 npm install better-sqlite3）。
- * 两者对外暴露统一的 prepare/run/get/all/exec 接口，业务层无感知。
+ * 使用 Node.js 内置模块 node:sqlite（Node >= 22.5，零安装、免编译），
+ * 与项目"零外部依赖"的设计保持一致；
+ * 对外暴露统一的 prepare/run/get/all/exec 接口，业务层无感知。
  */
 
 const CANDIDATES = [
@@ -14,12 +14,6 @@ const CANDIDATES = [
     load() {
       const { DatabaseSync } = require('node:sqlite');
       return DatabaseSync;
-    },
-  },
-  {
-    name: 'better-sqlite3',
-    load() {
-      return require('better-sqlite3');
     },
   },
 ];
@@ -37,8 +31,7 @@ function createConnection(file) {
     }
   }
   throw new Error(
-    '无法初始化 SQLite：请先安装 Node.js >= 22.5（内置 node:sqlite），' +
-      '或在 server 目录执行 npm install better-sqlite3。原始错误：' +
+    '无法初始化 SQLite：请先安装 Node.js >= 22.5（内置 node:sqlite）。原始错误：' +
       (lastError && lastError.message)
   );
 }

@@ -32,7 +32,7 @@ exports.register = (req, res) => {
   const info = db.run(
     `INSERT INTO users (username, password_hash, salt, nickname, phone, email, role, status, created_at)
      VALUES (?,?,?,?,?,?, 'customer', 'active', ?)`,
-    [data.username, hash, hash.split('$')[5], data.nickname, data.phone || '', data.email || '', now()]
+    [data.username, hash, hash.split('$')[4], data.nickname, data.phone || '', data.email || '', now()]
   );
 
   const user = db.get('SELECT * FROM users WHERE id = ?', [info.lastInsertRowid]);
@@ -99,7 +99,7 @@ exports.changePassword = (req, res) => {
   const hash = hashPassword(data.newPassword);
   db.run('UPDATE users SET password_hash = ?, salt = ?, updated_at = ? WHERE id = ?', [
     hash,
-    hash.split('$')[5],
+    hash.split('$')[4],
     now(),
     req.user.id,
   ]);

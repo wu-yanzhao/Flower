@@ -52,7 +52,7 @@ E:\Flower
 │   │   ├── app.js            # 应用入口
 │   │   ├── config.js         # 配置（端口 / 密钥 / 路径）
 │   │   ├── db\               # 数据库连接、表结构、种子数据
-│   │   │   ├── driver.js     # 数据库驱动适配（内置 sqlite / better-sqlite3）
+│   │   │   ├── driver.js     # 数据库驱动适配（Node 内置 node:sqlite ≥ 22.5）
 │   │   │   ├── index.js      # 初始化 + 迁移 + 操作日志
 │   │   │   ├── schema.sql    # 建表语句（9 张表）
 │   │   │   └── seed.js       # 演示数据（18 款花、32 笔历史订单）
@@ -207,12 +207,13 @@ npm start          # 等价于 node server.js
 
 ```bash
 npm start           # 启动服务（默认 3000 端口）
-npm run dev         # 开发模式（文件变更自动重启，Node 18.11+ 支持）
+npm run dev         # 开发模式（文件变更自动重启）
 npm run reset       # 重置数据库并写入演示数据（服务运行中亦可安全执行）
 npm run seed        # 追加演示数据（数据已存在时跳过）
 npm test            # 执行全部接口测试（顾客端 + 管理端，组间自动重置数据）
 npm run test:api    # 仅顾客端业务接口测试（35 项）
 npm run test:admin  # 仅管理端写操作接口测试（49 项）
+npm run test:unit   # 单元测试（口令散列 / JWT 校验，Node 内置 node:test）
 ```
 
 > 自动化测试当前结果：**84 项断言全部通过**（详见 `docs/04-系统测试.md`）。
@@ -233,7 +234,7 @@ npm run open        # 启动并自动打开浏览器
 ## 八、常见问题
 
 **Q1：提示"无法初始化 SQLite"？**
-请使用 Node.js 18 及以上版本；若使用 Node 16 及以下，请在 `server` 目录执行 `npm install better-sqlite3` 后重试。
+请使用 Node.js **22.5 及以上版本**（本项目依赖 Node 内置的 `node:sqlite` 模块，无需安装任何数据库依赖）。
 
 **Q2：端口被占用？**
 在 `server` 目录创建 `.env` 文件，写入 `PORT=4000` 后重启；或修改 `src/config.js`。

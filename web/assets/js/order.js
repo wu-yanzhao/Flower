@@ -40,7 +40,7 @@
       '<div style="line-height:2">' +
       '<div><b>收货人：</b>' + UI.escapeHtml(order.receiver_name) + '　<b>联系电话：</b>' + UI.escapeHtml(order.receiver_phone) + '</div>' +
       '<div><b>收货地址：</b>' + UI.escapeHtml(order.receiver_address) + '</div>' +
-      '<div><b>物流公司：</b>' + (order.express_company || '待发货') + '　<b>运单号：</b>' + (order.express_no || '—') + '</div>' +
+      '<div><b>物流公司：</b>' + UI.escapeHtml(order.express_company || '待发货') + '　<b>运单号：</b>' + UI.escapeHtml(order.express_no || '—') + '</div>' +
       '<div><b>订单备注：</b>' + UI.escapeHtml(order.remark || '无') + '</div>' +
       '</div>';
 

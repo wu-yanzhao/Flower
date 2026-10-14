@@ -145,6 +145,12 @@
     loadLatest();
     loadLogs();
 
+    // 导出日志：接口需管理员令牌，这里以查询参数 token 携带，供 <a> 直接下载
+    var logExport = document.getElementById('logExport');
+    if (logExport) {
+      logExport.href = window.API.base + '/admin/logs/export?limit=1000&token=' + encodeURIComponent(window.Auth.getToken());
+    }
+
     document.getElementById('trendDays').addEventListener('change', function () {
       loadTrend(this.value);
     });

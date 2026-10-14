@@ -5,7 +5,7 @@
   "main": "src/app.js",
   "private": true,
   "engines": {
-    "node": ">=18"
+    "node": ">=22.5"
   },
   "scripts": {
     "start": "node --no-warnings src/app.js",
@@ -15,6 +15,7 @@
     "test:api": "node --no-warnings scripts/smoke-test.js",
     "test:admin": "node --no-warnings scripts/admin-test.js",
     "test:upload": "node --no-warnings scripts/upload-test.js",
+    "test:unit": "node --no-warnings --test test/*.test.js",
     "test": "node --no-warnings scripts/smoke-test.js && node --no-warnings scripts/reset.js && node --no-warnings scripts/admin-test.js"
   },
   "dependencies": {

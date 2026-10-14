@@ -61,7 +61,7 @@
       parts.push('<path d="' + linePath + '" fill="none" stroke="' + (options.color || PALETTE[0]) + '" stroke-width="2.5" stroke-linejoin="round"/>');
       coords.forEach(function (c) {
         parts.push('<circle cx="' + c.x.toFixed(1) + '" cy="' + c.y.toFixed(1) + '" r="3.6" fill="#fff" stroke="' + (options.color || PALETTE[0]) + '" stroke-width="2.4"/>');
-        parts.push('<text x="' + c.x.toFixed(1) + '" y="' + (padT + plotH + 18) + '" text-anchor="middle" font-size="11" fill="#a2959a">' + (c.d.label || '') + '</text>');
+        parts.push('<text x="' + c.x.toFixed(1) + '" y="' + (padT + plotH + 18) + '" text-anchor="middle" font-size="11" fill="#a2959a">' + esc(c.d.label) + '</text>');
         if (options.showValue !== false) {
           parts.push('<text x="' + c.x.toFixed(1) + '" y="' + (c.y - 10).toFixed(1) + '" text-anchor="middle" font-size="11" fill="#6f6367">' + (Number(c.d.value) || 0) + '</text>');
         }
@@ -88,7 +88,7 @@
       var value = Number(d.value) || 0;
       var bw = Math.max(2, (barW * value) / max);
       var color = PALETTE[i % PALETTE.length];
-      parts.push('<text x="0" y="' + (y + 16) + '" font-size="12" fill="#6f6367">' + shortText(d.label, 14) + '</text>');
+      parts.push('<text x="0" y="' + (y + 16) + '" font-size="12" fill="#6f6367">' + esc(shortText(d.label, 14)) + '</text>');
       parts.push('<rect x="' + labelW + '" y="' + (y + 3) + '" width="' + barW + '" height="18" rx="9" fill="#f7eff1"/>');
       parts.push('<rect x="' + labelW + '" y="' + (y + 3) + '" width="' + bw.toFixed(1) + '" height="18" rx="9" fill="' + color + '"/>');
       parts.push('<text x="' + (labelW + barW + 8) + '" y="' + (y + 16) + '" font-size="12" fill="#6f6367">' + (options.unit || '') + value + '</text>');
@@ -137,20 +137,30 @@
       parts.push('<path d="' + path + '" fill="' + PALETTE[i % PALETTE.length] + '"/>');
       angle = next;
     });
-    parts.push('<text x="' + cx + '" y="' + (cy - 4) + '" text-anchor="middle" font-size="13" fill="#a2959a">' + (options.centerLabel || '总量') + '</text>');
+    parts.push('<text x="' + cx + '" y="' + (cy - 4) + '" text-anchor="middle" font-size="13" fill="#a2959a">' + esc(options.centerLabel || '总量') + '</text>');
     parts.push('<text x="' + cx + '" y="' + (cy + 18) + '" text-anchor="middle" font-size="18" font-weight="700" fill="#3a2f33">' + total + '</text>');
 
     // 图例
     var legend = data
       .map(function (d, i) {
         var pct = Math.round((Number(d.value) / total) * 100);
-        return '<span><i style="background:' + PALETTE[i % PALETTE.length] + '"></i>' + d.name + ' ' + pct + '%</span>';
+        return '<span><i style="background:' + PALETTE[i % PALETTE.length] + '"></i>' + esc(d.name) + ' ' + pct + '%</span>';
       })
       .join('');
     return {
       svg: svgWrap(size, size, parts.join('')),
       legend: '<div class="chart-legend">' + legend + '</div>',
     };
+  }
+
+  /** 转义 HTML 特殊字符，避免商品名/分类名等动态文本注入 SVG 标签 */
+  function esc(text) {
+    return String(text == null ? '' : text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   function shortText(text, len) {

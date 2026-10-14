@@ -99,7 +99,7 @@
         '<div style="margin-top:14px;line-height:2">' +
         '<div><b>收货人：</b>' + UI.escapeHtml(o.receiver_name) + '　<b>电话：</b>' + UI.escapeHtml(o.receiver_phone) + '</div>' +
         '<div><b>地址：</b>' + UI.escapeHtml(o.receiver_address) + '</div>' +
-        '<div><b>物流：</b>' + (o.express_company || '—') + ' ' + (o.express_no || '') + '</div>' +
+        '<div><b>物流：</b>' + UI.escapeHtml(o.express_company || '—') + ' ' + UI.escapeHtml(o.express_no || '') + '</div>' +
         '<div><b>金额：</b>商品 ¥' + UI.money(o.total_amount) + '，优惠 -¥' + UI.money(o.discount_amount) +
         '，实付 <b style="color:#e4577a">¥' + UI.money(o.pay_amount) + '</b></div>' +
         '</div>' +

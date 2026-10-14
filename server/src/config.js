@@ -33,6 +33,12 @@ const config = {
   port: Number(process.env.PORT || 3000),
   /** 运行环境 */
   env: process.env.NODE_ENV || 'development',
+  /** 跨域白名单（逗号分隔）：默认 ['*'] 放行全部来源（本地 / 演示 / file:// 不受影响）；
+   *  生产环境在 .env 设置 CORS_ORIGINS 后即按白名单收紧 */
+  corsOrigins: (process.env.CORS_ORIGINS || '*')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean),
   /** JWT 签名密钥（生产环境请通过 .env 的 JWT_SECRET 指定固定强随机值） */
   jwtSecret: process.env.JWT_SECRET || (() => {
     // 未显式配置时，每次启动随机生成，避免仓库内置弱密钥被利用伪造 token。

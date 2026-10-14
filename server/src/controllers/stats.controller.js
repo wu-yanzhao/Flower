@@ -122,3 +122,23 @@ exports.logs = (req, res) => {
   const list = db.all('SELECT * FROM operation_logs ORDER BY id DESC LIMIT ?', [limit]);
   return ok(res, list);
 };
+
+/** 导出后台操作日志为 CSV（供管理端下载，可用 ?token= 携带管理员令牌） */
+exports.logsExport = (req, res) => {
+  const db = req.app.locals.db;
+  const limit = Math.min(parseInt(req.query.limit, 10) || 500, 5000);
+  const list = db.all('SELECT * FROM operation_logs ORDER BY id DESC LIMIT ?', [limit]);
+  const header = ['ID', '管理员', '模块', '操作', '详情', '时间'];
+  const rows = list.map((r) => [r.id, r.admin_name, r.module, r.action, r.detail, r.created_at]);
+  const csv = [header].concat(rows).map((cols) => cols.map(csvCell).join(',')).join('\r\n');
+  res.setHeader('Content-Type', 'text/csv; charset=utf-8');
+  res.setHeader('Content-Disposition', 'attachment; filename="operation-logs.csv"');
+  // 前置 UTF-8 BOM，避免 Excel 打开中文乱码
+  return res.send('\uFEFF' + csv);
+};
+
+/** CSV 单元格转义：含逗号 / 引号 / 换行时用双引号包裹，内部引号翻倍 */
+function csvCell(value) {
+  const s = value == null ? '' : String(value);
+  return /[",\r\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+}
