@@ -15,8 +15,9 @@
     "test:api": "node --no-warnings scripts/smoke-test.js",
     "test:admin": "node --no-warnings scripts/admin-test.js",
     "test:upload": "node --no-warnings scripts/upload-test.js",
-    "test:unit": "node --no-warnings --test test/*.test.js",
-    "test": "node --no-warnings scripts/smoke-test.js && node --no-warnings scripts/reset.js && node --no-warnings scripts/admin-test.js"
+    "test:extended": "node --no-warnings scripts/extended-test.js",
+    "test:unit": "node --no-warnings --test test/jwt.test.js test/password.test.js test/utils.test.js",
+    "test": "npm run test:api && npm run reset && npm run test:admin && npm run reset && npm run test:extended && npm run test:unit"
   },
   "dependencies": {
     "express": "^4.22.3"

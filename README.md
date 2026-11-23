@@ -54,7 +54,7 @@ E:\Flower
 │   │   ├── db\               # 数据库连接、表结构、种子数据
 │   │   │   ├── driver.js     # 数据库驱动适配（Node 内置 node:sqlite ≥ 22.5）
 │   │   │   ├── index.js      # 初始化 + 迁移 + 操作日志
-│   │   │   ├── schema.sql    # 建表语句（9 张表）
+│   │   │   ├── schema.sql    # 建表语句（10 张表）
 │   │   │   └── seed.js       # 演示数据（18 款花、32 笔历史订单）
 │   │   ├── controllers\      # 控制器（业务逻辑）
 │   │   ├── routes\           # 路由（接口定义）
@@ -64,7 +64,10 @@ E:\Flower
 │   │   ├── reset.js          # 重置演示数据（支持服务运行中重置）
 │   │   ├── seed.js           # 追加演示数据
 │   │   ├── smoke-test.js     # 顾客端业务接口测试（35 项）
-│   │   └── admin-test.js     # 管理端写操作接口测试（49 项）
+│   │   ├── admin-test.js     # 管理端写操作接口测试（49 项）
+│   │   ├── upload-test.js    # 图片上传接口测试（13 项）
+│   │   └── extended-test.js  # 边界 / 异常 / 错误处理 / 回归测试（223 项）
+│   ├── test\                 # 单元测试（Node 内置 node:test，52 项）
 │   ├── data\flower.db        # SQLite 数据库（首次启动自动生成）
 │   └── logs\                 # 运行日志
 ├── web\                      # 前端（顾客端 + 管理端）
@@ -210,13 +213,16 @@ npm start           # 启动服务（默认 3000 端口）
 npm run dev         # 开发模式（文件变更自动重启）
 npm run reset       # 重置数据库并写入演示数据（服务运行中亦可安全执行）
 npm run seed        # 追加演示数据（数据已存在时跳过）
-npm test            # 执行全部接口测试（顾客端 + 管理端，组间自动重置数据）
-npm run test:api    # 仅顾客端业务接口测试（35 项）
-npm run test:admin  # 仅管理端写操作接口测试（49 项）
-npm run test:unit   # 单元测试（口令散列 / JWT 校验，Node 内置 node:test）
+npm test               # 全套：顾客端 + 管理端 + 扩展接口 + 单元测试（组间自动重置数据）
+npm run test:api       # 仅顾客端业务接口测试（35 项）
+npm run test:admin     # 仅管理端写操作接口测试（49 项）
+npm run test:extended  # 边界值 / 异常输入 / 错误处理 / 关键回归（223 项）
+npm run test:upload    # 图片上传接口测试（13 项）
+npm run test:unit      # 单元测试：口令散列 / JWT / 校验器 / 工具函数（52 项）
 ```
 
-> 自动化测试当前结果：**84 项断言全部通过**（详见 `docs/04-系统测试.md`）。
+> 自动化测试当前结果：`npm test` 共 **359 项断言全部通过**（35 + 49 + 223 + 52）；另有上传接口 13 项与页面功能用例 30 项，合计 402 项。详见 `docs/04-系统测试.md`。
+> 测试会自建账号、商品与订单，如需还原演示数据，执行 `npm run reset`。
 
 环境变量（可选，见 `server/.env.example`）：`PORT`、`JWT_SECRET`、`DB_FILE`。
 
