@@ -5,11 +5,20 @@ const path = require('path');
 const config = require('../config');
 const { HttpError } = require('../utils/http-error');
 
+/** 对 URL 中携带的 token 参数脱敏，避免明文令牌落到日志/控制台 */
+function maskUrl(rawUrl) {
+  try {
+    return String(rawUrl).replace(/([?&]token=)[^&#\s]*/gi, '$1***');
+  } catch (err) {
+    return '<invalid-url>';
+  }
+}
+
 /** 简易请求日志：记录到控制台与 logs/server.log */
 function requestLogger(req, res, next) {
   const start = Date.now();
   res.on('finish', () => {
-    const line = `[${new Date().toLocaleString('zh-CN')}] ${req.method} ${req.originalUrl} -> ${res.statusCode} (${
+    const line = `[${new Date().toLocaleString('zh-CN')}] ${req.method} ${maskUrl(req.originalUrl)} -> ${res.statusCode} (${
       Date.now() - start
     }ms)`;
     if (req.originalUrl.startsWith('/api')) {
@@ -43,7 +52,7 @@ function errorHandler(err, req, res, next) {
     message = '请求内容过大（图片超限），请压缩后重试';
   }
   if (status >= 500) {
-    console.error('[ERROR]', req.method, req.originalUrl, err);
+    console.error('[ERROR]', req.method, maskUrl(req.originalUrl), err);
   }
   res.status(status).json({
     code: status,

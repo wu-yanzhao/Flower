@@ -8,7 +8,7 @@
   /** 商品卡片 HTML */
   function flowerCard(f, options) {
     options = options || {};
-    var img = f.image || 'assets/images/ui/no-image.svg';
+    var img = UI.escapeHtml(f.image || 'assets/images/ui/no-image.svg');
     var tagHtml = '';
     if (f.recommended) tagHtml += '<span class="tag-hot">推荐</span>';
     if (f.stock <= 10) tagHtml += '<span class="tag-hot" style="background:#e2564f">仅剩 ' + f.stock + '</span>';

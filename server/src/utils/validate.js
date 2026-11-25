@@ -16,7 +16,9 @@ const { HttpError } = require('./http-error');
 
 const TYPE_MAP = {
   number: (v) => typeof v === 'number' || (typeof v === 'string' && v.trim() !== '' && !Number.isNaN(Number(v))),
-  integer: (v) => Number.isInteger(Number(v)) && String(v).trim() !== '',
+  // 布尔值不能当整数：Number(true)=1 会通过校验，但 parseInt(true) 得到 NaN，
+  // 进而绕过 min/max 比较并把 NaN 写进数据库。这里显式拒绝 boolean。
+  integer: (v) => typeof v !== 'boolean' && Number.isInteger(Number(v)) && String(v).trim() !== '',
   string: (v) => typeof v === 'string',
   array: (v) => Array.isArray(v),
   boolean: (v) => typeof v === 'boolean' || v === 'true' || v === 'false' || v === 0 || v === 1,

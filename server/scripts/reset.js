@@ -79,6 +79,15 @@ console.log('  订单：  ' + count('orders') + ' 笔');
 console.log('  评价：  ' + count('reviews') + ' 条');
 console.log('');
 
+// 关闭 initDatabase() 打开的数据库连接：node:sqlite 的连接句柄会阻塞进程退出，
+// 不关闭时 reset 命令会多挂一段时间才返回，bat 看起来像“卡住没反应”。
+db.raw.close();
+
+// 保险：上面的统计已经全部输出完毕，主动结束进程，避免任何残留句柄
+// （WAL 文件句柄、第三方 watcher 等）让 npm run reset 迟迟不把控制权交还给 bat。
+// 退出码 0 表示成功，保证 bat 的 `if errorlevel 1 goto fail` 不会误判为失败。
+process.exit(0);
+
 function count(table) {
   try {
     return db.get('SELECT COUNT(*) AS c FROM ' + table).c;

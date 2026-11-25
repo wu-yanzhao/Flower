@@ -31,6 +31,21 @@
       localStorage.setItem(USER_KEY, JSON.stringify(user || null));
     },
     clear: function () {
+      // 先带上当前令牌异步通知后端吊销（JWT 黑名单），再清本地凭证。
+      // 用 try/catch 包裹：后端不可达时仍保证本地登出成功，不阻塞页面跳转。
+      try {
+        var token = localStorage.getItem(TOKEN_KEY);
+        if (token && typeof fetch === 'function') {
+          fetch(BASE + '/auth/logout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
+            body: '{}',
+            keepalive: true,
+          }).catch(function () {});
+        }
+      } catch (e) {
+        /* 忽略：本地登出优先 */
+      }
       localStorage.removeItem(TOKEN_KEY);
       localStorage.removeItem(USER_KEY);
     },

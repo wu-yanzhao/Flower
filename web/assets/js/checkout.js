@@ -77,7 +77,7 @@
       .map(function (g) {
         return (
           '<div class="goods-line">' +
-          '<img src="' + (g.image || 'assets/images/ui/no-image.svg') + '" alt=""/>' +
+          '<img src="' + UI.escapeHtml(g.image || 'assets/images/ui/no-image.svg') + '" alt=""/>' +
           '<div style="flex:1"><div style="font-weight:600">' + UI.escapeHtml(g.name) + '</div>' +
           '<div class="muted text-sm">¥' + UI.money(g.price) + ' × ' + g.quantity + '</div></div>' +
           '<b class="price">¥' + UI.money(g.price * g.quantity) + '</b>' +

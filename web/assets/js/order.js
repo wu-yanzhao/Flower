@@ -27,7 +27,7 @@
       .map(function (it) {
         return (
           '<tr><td><div style="display:flex;gap:10px;align-items:center">' +
-          '<img class="thumb" src="' + (it.flower_image || 'assets/images/ui/no-image.svg') + '" alt=""/>' +
+          '<img class="thumb" src="' + UI.escapeHtml(it.flower_image || 'assets/images/ui/no-image.svg') + '" alt=""/>' +
           '<div><div>' + UI.escapeHtml(it.flower_name) + '</div>' +
           '<a class="muted text-sm" href="flower.html?id=' + it.flower_id + '">查看商品</a></div></div></td>' +
           '<td>¥' + UI.money(it.price) + '</td><td>×' + it.quantity + '</td>' +

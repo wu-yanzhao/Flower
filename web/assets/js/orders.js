@@ -12,7 +12,7 @@
       .map(function (it) {
         return (
           '<div class="order-goods">' +
-          '<img src="' + (it.flower_image || 'assets/images/ui/no-image.svg') + '" alt=""/>' +
+          '<img src="' + UI.escapeHtml(it.flower_image || 'assets/images/ui/no-image.svg') + '" alt=""/>' +
           '<div style="flex:1"><div style="font-weight:600">' + UI.escapeHtml(it.flower_name) + '</div>' +
           '<div class="muted text-sm">¥' + UI.money(it.price) + ' × ' + it.quantity + '</div></div>' +
           '<b class="price" style="font-size:15px">¥' + UI.money(it.subtotal) + '</b>' +
@@ -82,7 +82,7 @@
           return (
             '<div class="card" style="margin-bottom:12px;box-shadow:none">' +
             '<div style="display:flex;gap:10px;align-items:center;margin-bottom:8px">' +
-            '<img src="' + (it.flower_image || 'assets/images/ui/no-image.svg') + '" style="width:46px;height:46px;border-radius:8px"/>' +
+            '<img src="' + UI.escapeHtml(it.flower_image || 'assets/images/ui/no-image.svg') + '" style="width:46px;height:46px;border-radius:8px"/>' +
             '<b>' + UI.escapeHtml(it.flower_name) + '</b></div>' +
             '<div class="rate" data-flower="' + it.flower_id + '" data-idx="' + idx + '" style="margin-bottom:6px">' +
             [1, 2, 3, 4, 5].map(function (n) { return '<span data-star="' + n + '" style="font-size:22px;cursor:pointer;color:#e0d6d9">★</span>'; }).join('') +

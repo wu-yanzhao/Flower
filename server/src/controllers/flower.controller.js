@@ -259,5 +259,13 @@ function validateFlower(body, isUpdate) {
   if (data.recommended !== undefined) {
     data.recommended = Number(data.recommended) ? 1 : 0;
   }
+  // 图片地址安全校验：拒绝可逃逸 HTML 属性或执行脚本的字符/伪协议，
+  // 避免管理端录入的 image 值在顾客端 innerHTML 拼接时形成存储型 XSS。
+  if (data.image !== undefined && data.image !== '') {
+    const img = String(data.image);
+    if (/[\x00-\x1f<>"'`\s]|^javascript:/i.test(img)) {
+      throw new HttpError(400, '图片地址不合法');
+    }
+  }
   return data;
 }

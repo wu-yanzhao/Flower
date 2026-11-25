@@ -70,8 +70,10 @@ async function serveStatic(req, res) {
 
   let filePath = path.join(ROOT, pathname);
 
-  // 防目录穿越：解析后的路径必须仍在 web 目录内
-  if (!filePath.startsWith(ROOT)) {
+  // 防目录穿越：解析后的路径必须仍在 web 目录内。
+  // 注意用 ROOT + 分隔符比较，避免 /web-other 这类同级目录因前缀相同被误判为合法。
+  const rootWithSep = ROOT.endsWith(path.sep) ? ROOT : ROOT + path.sep;
+  if (filePath !== ROOT && !filePath.startsWith(rootWithSep)) {
     return sendText(res, 403, '禁止访问该路径');
   }
 
@@ -156,7 +158,13 @@ function proxyToBackend(req, res) {
 /* ---------------- 启动 ---------------- */
 
 const server = http.createServer((req, res) => {
-  const pathname = new URL(req.url, 'http://localhost').pathname;
+  // 畸形请求 URL（如含空格/控制字符）会让 new URL 抛错，若不捕获将直接崩溃整个前端服务。
+  let pathname;
+  try {
+    pathname = new URL(req.url, 'http://localhost').pathname;
+  } catch (e) {
+    return sendText(res, 400, '请求地址非法');
+  }
 
   if (pathname === '/api' || pathname.startsWith('/api/')) {
     return proxyToBackend(req, res);

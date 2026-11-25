@@ -28,7 +28,7 @@
           '<div class="cart-row" data-id="' + item.id + '">' +
           '<input type="checkbox" class="checkbox" data-check="' + item.id + '" ' +
           (item.checked === 1 && !disabled ? 'checked' : '') + (disabled ? ' disabled' : '') + ' />' +
-          '<img class="pic" src="' + (item.image || 'assets/images/ui/no-image.svg') + '" alt=""/>' +
+          '<img class="pic" src="' + UI.escapeHtml(item.image || 'assets/images/ui/no-image.svg') + '" alt=""/>' +
           '<div><div class="nm">' + UI.escapeHtml(item.name) + '</div>' +
           '<div class="sb">' + UI.escapeHtml(item.subtitle || '') + '</div>' +
           (disabled ? '<div class="sb" style="color:#e2564f">该商品已下架或售罄</div>' : '') +

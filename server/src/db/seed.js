@@ -182,7 +182,7 @@ module.exports = function seed(db) {
            express_company, express_no, created_at, paid_at, shipped_at, completed_at, canceled_at)
          VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
         [
-          generateOrderNo(), userId, addr.receiver, addr.phone, `${addr.region} ${addr.detail}`,
+          generateOrderNo(db), userId, addr.receiver, addr.phone, `${addr.region} ${addr.detail}`,
           seedIndex % 4 === 0 ? '请尽量在下午 3 点后送达，谢谢！' : '',
           total, discount, pay, items.reduce((s, it) => s + it.qty, 0), status,
           status === 'pending' ? null : '微信支付',
